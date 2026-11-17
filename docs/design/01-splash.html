@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Splash (abertura) · Fiado Fácil</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=block');
+
+body { margin: 0; font-family: var(--font-sans); background: var(--bg); color: var(--text-primary); -webkit-font-smoothing: antialiased; }
+.ff-frame { width: 360px; box-sizing: border-box; padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+.ff-frame.flush { padding: 0; }
+
+.ff-icon { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1; letter-spacing: normal; text-transform: none; white-space: nowrap; direction: ltr; -webkit-font-feature-settings: 'liga'; font-feature-settings: 'liga'; display: inline-block; flex: none; }
+
+/* Button */
+.ff-btn { font-family: var(--font-sans); font-size: 18px; line-height: 24px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: var(--button-height); width: 100%; box-sizing: border-box; padding: 0 var(--space-4); border-radius: var(--radius-md); border: 1px solid transparent; cursor: pointer; }
+.ff-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ff-btn-primary { background: var(--primary); color: var(--on-primary); }
+.ff-btn-primary:active, .ff-btn-primary.is-pressed { background: var(--primary-pressed); }
+.ff-btn-secondary { background: var(--surface); color: var(--primary); border-color: var(--primary); }
+.ff-btn-text { background: none; color: var(--primary); min-height: var(--touch-min); width: auto; padding: 0 var(--space-2); }
+.ff-btn[disabled] { background: var(--disabled-bg); color: var(--text-secondary); border-color: var(--disabled-bg); cursor: not-allowed; }
+.ff-btn-reason { font-size: 15px; line-height: 20px; color: var(--text-secondary); margin: 0; }
+
+/* TopBar */
+.ff-topbar { display: flex; align-items: center; justify-content: space-between; min-height: var(--topbar-height); padding: 0 var(--space-2) 0 var(--space-4); background: var(--bg); box-sizing: border-box; }
+.ff-topbar.has-back { padding-left: var(--space-1); }
+.ff-topbar-title { font-size: 22px; line-height: 28px; font-weight: 700; margin: 0; }
+.ff-topbar-left { display: flex; align-items: center; gap: var(--space-1); min-width: 0; }
+.ff-topbar-right { display: flex; align-items: center; gap: var(--space-1); }
+.ff-topbar-user { font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+
+/* OfflineBanner */
+.ff-banner { display: flex; align-items: center; gap: var(--space-3); min-height: var(--touch-min); padding: var(--space-2) var(--space-4); background: var(--info-container); color: var(--text-primary); font-size: 16px; line-height: 24px; box-sizing: border-box; }
+.ff-banner .ff-icon { color: var(--info); }
+
+/* Fields */
+.ff-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.ff-label { font-size: 18px; line-height: 24px; font-weight: 700; color: var(--text-primary); }
+.ff-label-opt { font-weight: 400; color: var(--text-secondary); }
+.ff-input { display: flex; align-items: center; gap: var(--space-2); min-height: var(--field-height); padding: 0 var(--space-3); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); box-sizing: border-box; font-size: 18px; line-height: 26px; color: var(--text-primary); }
+.ff-input .ff-icon { color: var(--border); }
+.ff-input.is-focus { border: 2px solid var(--primary); padding: 0 calc(var(--space-3) - 1px); }
+.ff-input.is-error { border: 2px solid var(--error); padding: 0 calc(var(--space-3) - 1px); }
+.ff-input-text { flex: 1; min-width: 0; }
+.ff-input-placeholder { color: var(--text-secondary); }
+.ff-input-clear { color: var(--text-secondary); }
+.ff-money { min-height: var(--amount-field-height); }
+.ff-money-prefix { font-size: 22px; line-height: 28px; font-weight: 700; color: var(--text-secondary); }
+.ff-money-value { flex: 1; text-align: right; font-size: 28px; line-height: 36px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ff-counter { align-self: flex-end; font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+.ff-error { display: flex; align-items: flex-start; gap: var(--space-2); color: var(--error); font-size: 16px; line-height: 24px; margin: 0; }
+.ff-error .ff-icon { font-size: 20px; margin-top: 2px; }
+
+/* ClientItem */
+.ff-client { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: var(--list-item-min); padding: var(--space-3) var(--space-4); background: var(--surface); border-bottom: 1px solid var(--divider); box-sizing: border-box; cursor: pointer; }
+.ff-client:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.ff-client-name { font-size: 18px; line-height: 26px; color: var(--text-primary); }
+.ff-client-balance { font-size: 18px; line-height: 24px; font-weight: 700; text-align: right; white-space: nowrap; color: var(--text-primary); }
+.ff-client-balance.is-zero { font-weight: 400; color: var(--text-secondary); }
+.ff-client-balance.is-credit { color: var(--primary); }
+
+/* BalanceHeader */
+.ff-balance { background: var(--surface); border-radius: var(--radius-md); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); border: 1px solid var(--divider); }
+.ff-balance.is-credit { background: var(--primary-container); border-color: var(--primary-container); }
+.ff-balance-name { font-size: 22px; line-height: 28px; font-weight: 700; margin: 0; }
+.ff-balance-phone { font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+.ff-balance-kind { font-size: 18px; line-height: 24px; font-weight: 700; margin-top: var(--space-3); }
+.ff-balance-value { font-size: 32px; line-height: 40px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ff-balance-note { display: flex; align-items: center; gap: var(--space-1); font-size: 15px; line-height: 20px; color: var(--on-warning); margin-top: var(--space-1); }
+.ff-balance-note .ff-icon { font-size: 20px; }
+.ff-balance-pending { display: flex; align-items: center; gap: var(--space-1); font-size: 15px; line-height: 20px; color: var(--info); }
+.ff-balance-pending .ff-icon { font-size: 20px; }
+
+/* HistoryItem */
+.ff-hist { display: flex; flex-direction: column; gap: 2px; min-height: var(--list-item-min); padding: var(--space-3) var(--space-4); background: var(--surface); border-bottom: 1px solid var(--divider); box-sizing: border-box; }
+.ff-hist-row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+.ff-hist-type { font-size: 18px; line-height: 24px; font-weight: 700; }
+.ff-hist-value { font-size: 18px; line-height: 24px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ff-hist-meta { font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+.ff-hist.is-canceled .ff-hist-type, .ff-hist.is-canceled .ff-hist-value, .ff-hist.is-canceled .ff-hist-meta-main { text-decoration: line-through; color: var(--text-secondary); font-weight: 400; }
+.ff-hist-canceled { font-size: 15px; line-height: 20px; color: var(--text-secondary); font-weight: 700; }
+
+/* LimitAlert */
+.ff-alert { background: var(--warning-container); border: 2px solid var(--on-warning); border-radius: var(--radius-lg); padding: var(--space-6) var(--space-5) var(--space-5); box-shadow: var(--shadow-dialog); display: flex; flex-direction: column; gap: var(--space-3); box-sizing: border-box; }
+.ff-alert-head { display: flex; align-items: center; gap: var(--space-2); color: var(--on-warning); }
+.ff-alert-head .ff-icon { font-size: 32px; }
+.ff-alert-title { font-size: 22px; line-height: 28px; font-weight: 700; margin: 0; color: var(--on-warning); }
+.ff-alert-body { font-size: 18px; line-height: 26px; margin: 0; color: var(--text-primary); }
+.ff-alert-actions { display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-2); }
+
+/* Snackbar */
+.ff-snack { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--primary-container); color: var(--text-primary); border-radius: var(--radius-md); font-size: 16px; line-height: 24px; box-shadow: var(--shadow-dialog); }
+.ff-snack .ff-icon { color: var(--primary); }
+
+/* Section heading used in screens */
+.ff-section { font-size: 18px; line-height: 24px; font-weight: 700; margin: var(--space-6) var(--space-4) var(--space-2); }
+
+</style>
+<style>
+/* Fiado Fácil — generated from tokens.json */
+:root, [data-theme="light"] {
+  --bg: #f7f5f1;
+  --surface: #ffffff;
+  --text-primary: #1c1b1a;
+  --text-secondary: #4f4b45;
+  --border: #7a746b;
+  --divider: #e3dfd8;
+  --primary: #1e6b43;
+  --primary-pressed: #17573a;
+  --on-primary: #ffffff;
+  --primary-container: #e6f2ea;
+  --warning-container: #fff3d6;
+  --on-warning: #6b4500;
+  --error: #b3261e;
+  --error-container: #fdecea;
+  --info: #1e4e8c;
+  --info-container: #e8f0fb;
+  --focus: #1e6b43;
+  --disabled-bg: #d9d5ce;
+  --scrim: #1c1b1a66;
+  --shadow-dialog: 0 4px 16px rgba(28, 27, 26, 0.18);
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --touch-min: 48px;
+  --button-height: 56px;
+  --field-height: 56px;
+  --amount-field-height: 72px;
+  --list-item-min: 64px;
+  --topbar-height: 64px;
+  --font-sans: "Atkinson Hyperlegible", Roboto, system-ui, sans-serif;
+}
+.type-balance { font-family: var(--font-sans); font-size: 32px; line-height: 40px; font-weight: 700; }
+.type-amount-input { font-family: var(--font-sans); font-size: 28px; line-height: 36px; font-weight: 700; }
+.type-title { font-family: var(--font-sans); font-size: 22px; line-height: 28px; font-weight: 700; }
+.type-label { font-family: var(--font-sans); font-size: 18px; line-height: 24px; font-weight: 700; }
+.type-body-lg { font-family: var(--font-sans); font-size: 18px; line-height: 26px; font-weight: 400; }
+.type-body { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 400; }
+.type-meta { font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 400; }
+
+</style>
+<style>
+/* Estilos do documento (moldura e páginas). Usam apenas tokens do design system. */
+html { background: var(--bg); }
+body { color: var(--text-primary); }
+.doc { max-width: 1180px; margin: 0 auto; padding: 40px 32px 80px; }
+.doc-nav { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 16px; line-height: 24px; margin-bottom: 32px; }
+.doc-nav a { color: var(--primary); font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; min-height: 48px; }
+.doc-nav a:hover { text-decoration: underline; }
+.doc-kicker { font-size: 15px; line-height: 20px; color: var(--text-secondary); margin: 0 0 8px; letter-spacing: .02em; }
+:where(.doc) h1 { font-size: 40px; line-height: 48px; margin: 0 0 16px; }
+:where(.doc) h2 { font-size: 28px; line-height: 36px; margin: 56px 0 16px; padding-top: 24px; border-top: 2px solid var(--text-primary); }
+:where(.doc) h3 { font-size: 22px; line-height: 28px; margin: 0 0 8px; }
+:where(.doc) h4 { font-size: 18px; line-height: 24px; margin: 16px 0 4px; }
+:where(.doc) :where(p, li, td, th) { font-size: 18px; line-height: 28px; }
+:where(.doc) ul { margin: 8px 0; padding-left: 24px; }
+:where(.doc) li { margin: 4px 0; }
+.lead { font-size: 20px !important; line-height: 30px !important; max-width: 820px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
+.meta li { margin: 0; font-size: 15px !important; line-height: 20px !important; background: var(--surface); border: 1px solid var(--divider); border-radius: var(--radius-sm); padding: 6px 12px; }
+.meta strong { font-weight: 700; }
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 24px; }
+.card { background: var(--surface); border: 1px solid var(--divider); border-radius: var(--radius-md); padding: 20px; }
+.card h4 { margin-top: 0; }
+.card p { margin: 0; font-size: 16px !important; line-height: 24px !important; }
+.state { display: grid; grid-template-columns: 388px minmax(0, 1fr); gap: 40px; align-items: start; padding: 32px 0; border-bottom: 1px solid var(--divider); }
+.state:last-of-type { border-bottom: 0; }
+.state-tag { display: inline-block; font-size: 15px; line-height: 20px; font-weight: 700; color: var(--on-primary); background: var(--primary); border-radius: var(--radius-sm); padding: 2px 10px; margin-bottom: 8px; }
+.state-tag.modal { background: var(--on-warning); }
+.state dl { margin: 12px 0 0; }
+.state dt { font-size: 15px; line-height: 20px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; margin-top: 16px; }
+.state dd { margin: 4px 0 0; font-size: 18px; line-height: 28px; }
+.state dd ul { margin: 0; }
+.device { width: 360px; padding: 14px; background: var(--text-primary); border-radius: 50px; box-shadow: var(--shadow-dialog); position: relative; }
+.device::before { content: ""; position: absolute; top: 5px; left: 50%; width: 56px; height: 4px; margin-left: -28px; border-radius: 2px; background: var(--border); }
+.screen :where(h1, h2, h3, p, ul) { margin: 0; padding-top: 0; border-top: 0; }
+.screen { width: 360px; height: 800px; border-radius: 36px; overflow: hidden; position: relative; background: var(--bg); font-family: var(--font-sans); color: var(--text-primary); }
+.app { width: 360px; height: 800px; box-sizing: border-box; display: flex; flex-direction: column; background: var(--bg); }
+.pad { display: flex; flex-direction: column; gap: 16px; padding: 16px; }
+.grow { flex-grow: 1; }
+.scrim { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px; background: var(--scrim); }
+.scrim > * { width: 100%; }
+.snack-pos { position: absolute; left: 16px; right: 16px; bottom: 16px; }
+.ff-alert.ff-dialog { background: var(--surface); border-color: var(--border); }
+.ff-dialog .ff-alert-head { color: var(--primary); }
+.ff-dialog .ff-alert-title { color: var(--text-primary); }
+.kp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 8px; background: var(--divider); }
+.kp { font-family: var(--font-sans); font-size: 24px; line-height: 28px; font-weight: 700; color: var(--text-primary); background: var(--surface); border: 1px solid var(--divider); border-radius: var(--radius-sm); min-height: 52px; display: flex; align-items: center; justify-content: center; }
+.who { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--divider); border-radius: var(--radius-md); }
+.who b { font-size: 20px; line-height: 26px; }
+.who span { font-size: 18px; line-height: 24px; font-weight: 700; }
+.meta-line { margin: 0; font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+.link { display: inline-flex; align-items: center; min-height: 48px; padding: 0 4px; font-size: 18px; line-height: 24px; font-weight: 700; color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+.block-error { display: flex; align-items: flex-start; gap: 8px; padding: 12px 16px; background: var(--error-container); border: 2px solid var(--error); border-radius: var(--radius-md); color: var(--error); font-size: 16px; line-height: 24px; }
+.block-info { display: flex; align-items: flex-start; gap: 8px; padding: 12px 16px; background: var(--info-container); border: 1px solid var(--info); border-radius: var(--radius-md); color: var(--text-primary); font-size: 16px; line-height: 24px; }
+.block-info .ff-icon { color: var(--info); }
+.divider-or { display: flex; align-items: center; gap: 12px; }
+.divider-or i { flex-grow: 1; height: 1px; background: var(--border); }
+.divider-or span { font-size: 16px; line-height: 24px; color: var(--text-secondary); }
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 48px 24px; }
+.empty .ff-icon { font-size: 48px; color: var(--border); }
+.empty p { margin: 0; font-size: 18px; line-height: 26px; }
+.spec { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--divider); border-radius: var(--radius-md); overflow: hidden; }
+.spec th { text-align: left; font-size: 15px !important; line-height: 20px !important; text-transform: uppercase; letter-spacing: .04em; color: var(--text-secondary); background: var(--bg); padding: 12px 16px; border-bottom: 1px solid var(--divider); }
+.spec td { vertical-align: top; padding: 12px 16px; border-bottom: 1px solid var(--divider); font-size: 16px !important; line-height: 24px !important; }
+.spec tr:last-child td { border-bottom: 0; }
+.spec td:first-child { font-weight: 700; width: 26%; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0 !important; }
+.chips li { margin: 0; background: var(--primary-container); color: var(--text-primary); border-radius: var(--radius-sm); padding: 4px 12px; font-size: 16px !important; line-height: 24px !important; }
+.foot { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--divider); font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+@media (max-width: 860px) { .state { grid-template-columns: 1fr; } .device { margin: 0 auto; } }
+@media print { .doc-nav { display: none; } .state { break-inside: avoid; } h2 { break-after: avoid; } }
+</style>
+</head>
+<body>
+<main class="doc"><nav class="doc-nav" aria-label="Navegação entre telas"><a href="00-indice.html"><span class="ff-icon" aria-hidden="true">grid_view</span>Índice das telas</a><span style="display:flex;gap:24px;flex-wrap:wrap"><span></span><a href="02-entrar.html">Entrar<span class="ff-icon" aria-hidden="true">arrow_forward</span></a></span></nav><p class="doc-kicker">Fiado Fácil · Especificação de tela · S0</p><h1>Splash (abertura)</h1><p class="lead">Primeira tela ao abrir o app. Mostra a marca enquanto o app verifica se já existe uma sessão no celular e decide para onde levar o usuário. Não tem interação.</p><ul class="meta"><li><strong>Requisitos:</strong> RNF01, RNF03</li><li><strong>Usuários:</strong> todos</li><li><strong>Duração:</strong> só o tempo de carregar</li></ul><div class="summary"><div class="card"><h4>Entrada</h4><p>Toque no ícone do Fiado Fácil na tela inicial do Android.</p></div><div class="card"><h4>Saída com sessão ativa</h4><p>Lista de Clientes, mesmo sem internet (dados do cache local).</p></div><div class="card"><h4>Saída sem sessão</h4><p>Entrar.</p></div><div class="card"><h4>Interação</h4><p>Nenhuma. O botão Voltar do Android fecha o app.</p></div></div><h2>Estados da tela</h2><p>2 estados. Cada um mostra a tela como ela aparece no celular de 360 × 800 dp.</p><section class="state" id="s-a"><div class="device"><div class="screen"><div class="app" style="background:#1e6b43;align-items:center;justify-content:center"><svg viewBox="150 126 230 274" width="120" height="143" role="img" aria-label="Fiado Fácil"><rect x="158" y="134" width="196" height="244" rx="24" fill="#fff3d6"/>
+<rect x="158" y="134" width="196" height="40" rx="24" fill="#6b4500"/>
+<rect x="158" y="154" width="196" height="20" fill="#6b4500"/>
+<line x1="190" y1="174" x2="190" y2="378" stroke="#6b4500" stroke-width="6"/>
+<line x1="206" y1="212" x2="330" y2="212" stroke="#c9b48a" stroke-width="10" stroke-linecap="round"/>
+<line x1="206" y1="246" x2="330" y2="246" stroke="#c9b48a" stroke-width="10" stroke-linecap="round"/>
+<line x1="206" y1="280" x2="270" y2="280" stroke="#c9b48a" stroke-width="10" stroke-linecap="round"/>
+<circle cx="318" cy="338" r="54" fill="#ffffff"/>
+<circle cx="318" cy="338" r="54" fill="none" stroke="#1e6b43" stroke-width="8"/>
+<path d="M292 339 L311 358 L346 320" fill="none" stroke="#1e6b43" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div></div><div><span class="state-tag">Estado A</span><h3>Splash do sistema (Android 12 ou superior)</h3><dl><dt>Quando aparece</dt><dd>Sempre que o app abre sem estar na memória (abertura a frio), no Android 12 ou superior.</dd><dt>O que a tela mostra</dt><dd><ul><li>Fundo color.primary (#1e6b43) em tela cheia.</li><li>Primeiro plano do ícone do app (a caderneta com a marca de conferido), centralizado.</li></ul></dd><dt>Ações e resultados</dt><dd>Nenhuma. O sistema remove o splash assim que o app desenha a primeira tela.</dd><dt>Observações</dt><dd>O Android 12+ não permite texto no splash do sistema; o nome entra apenas no estado B, quando houver tempo de carregamento extra.</dd></dl></div></section><section class="state" id="s-b"><div class="device"><div class="screen"><div class="app" style="background:#1e6b43;color:#fff;align-items:center;justify-content:center;gap:24px;position:relative"><svg viewBox="150 126 230 274" width="168" height="200" role="img" aria-label="Fiado Fácil"><rect x="158" y="134" width="196" height="244" rx="24" fill="#fff3d6"/>
+<rect x="158" y="134" width="196" height="40" rx="24" fill="#6b4500"/>
+<rect x="158" y="154" width="196" height="20" fill="#6b4500"/>
+<line x1="190" y1="174" x2="190" y2="378" stroke="#6b4500" stroke-width="6"/>
+<line x1="206" y1="212" x2="330" y2="212" stroke="#c9b48a" stroke-width="10" stroke-linecap="round"/>
+<line x1="206" y1="246" x2="330" y2="246" stroke="#c9b48a" stroke-width="10" stroke-linecap="round"/>
+<line x1="206" y1="280" x2="270" y2="280" stroke="#c9b48a" stroke-width="10" stroke-linecap="round"/>
+<circle cx="318" cy="338" r="54" fill="#ffffff"/>
+<circle cx="318" cy="338" r="54" fill="none" stroke="#1e6b43" stroke-width="8"/>
+<path d="M292 339 L311 358 L346 320" fill="none" stroke="#1e6b43" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/></svg><div style="display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center"><h1 style="margin:0;font-size:36px;line-height:44px;font-weight:700;color:#fff">Fiado Fácil</h1><p style="margin:0;font-size:18px;line-height:26px;color:#fff">A caderneta do fiado</p></div><p style="position:absolute;left:0;right:0;bottom:40px;margin:0;text-align:center;font-size:15px;line-height:20px;color:#e6f2ea">Mercadinho da Família</p></div></div></div><div><span class="state-tag">Estado B</span><h3>Splash com marca (carregamento estendido)</h3><dl><dt>Quando aparece</dt><dd>Quando a verificação da sessão demora mais que o splash do sistema (por exemplo, primeira abertura após instalar) e em Android anterior ao 12.</dd><dt>O que a tela mostra</dt><dd><ul><li>Ícone da caderneta em 168 × 200 dp.</li><li>Nome “Fiado Fácil” em 36 px, negrito, branco.</li><li>Assinatura “A caderneta do fiado” em 18 px.</li><li>“Mercadinho da Família” no rodapé, em 15 px.</li></ul></dd><dt>Ações e resultados</dt><dd><ul><li>Sessão válida → Lista de Clientes.</li><li>Sem sessão ou sessão encerrada → Entrar.</li><li>Usuário desativado pelo proprietário → Entrar, com a sessão apagada.</li></ul></dd></dl></div></section><h2>Comportamentos</h2><table class="spec"><thead><tr><th>Elemento</th><th>Interação</th><th>Resultado</th></tr></thead><tbody><tr><td>Abertura do app</td><td>Toque no ícone</td><td>Mostra o estado A; se o carregamento passar de cerca de 1 s, mostra o estado B.</td></tr><tr><td>Verificação de sessão</td><td>Automática</td><td>Usa a sessão salva no aparelho. Não exige internet para quem já entrou antes.</td></tr><tr><td>Botão Voltar do Android</td><td>Toque</td><td>Fecha o app.</td></tr><tr><td>Erro inesperado ao iniciar</td><td>Automático</td><td>Leva para Entrar, sem mostrar detalhes técnicos.</td></tr></tbody></table><h2>Regras e validações</h2><ul><li>O splash nunca fica na tela mais que o necessário: não há tempo mínimo artificial.</li><li>Sem internet e com sessão válida, o app abre normalmente com os dados salvos (RNF03).</li><li>Nenhuma informação de cliente é exibida antes da verificação da sessão (RNF01).</li></ul><h2>Acessibilidade</h2><ul><li>Contraste do branco sobre color.primary: 6,5:1; “Mercadinho da Família” (#e6f2ea): 5,6:1.</li><li>O ícone tem nome acessível “Fiado Fácil”; o leitor de tela anuncia o nome do app ao abrir.</li><li>Sem animação: nada pisca nem se move, o que evita desconforto para pessoas sensíveis a movimento.</li></ul><h2>Design system</h2><p>Componentes e tokens do Fiado Fácil usados nesta tela:</p><ul class="chips"><li>color.primary</li><li>color.on-primary</li><li>color.primary-container</li><li>type-title (escala 36 px)</li><li>Ícone do app</li></ul><p class="foot">Fiado Fácil · Protótipo v1.0 · 17/11/2026 · Dados fictícios. Mercadinho da Família é um parceiro simulado para fins acadêmicos.</p></main></body></html>
