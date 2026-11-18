@@ -1,0 +1,373 @@
+{
+  "version": 1,
+  "last_synced_sha": null,
+  "releases": [
+    "mvp"
+  ],
+  "items": [
+    {
+      "id": "001.1.1",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "bca33b831793b4325f850c802d02b4642cdae523242451ecd9130169543bc9c6",
+      "sequence": 1
+    },
+    {
+      "id": "001.1.2",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "fc039c4e4520e6902716c4096599cc5d02c4153cb1bef836eaa8c5aa1fae6258",
+      "sequence": 2
+    },
+    {
+      "id": "001.1",
+      "kind": "phase",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "44596726a529e6f9a02a58e00faab4fe53a6fb4108332c330c9ef15c69611b53",
+      "sequence": 1
+    },
+    {
+      "id": "001.2.1",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "hardened",
+      "content_hash": "cadff1f76821cf0c1cd78ced8f89805ad423436c6b0e92f3d0a54fa27bf3a599",
+      "sequence": 1
+    },
+    {
+      "id": "001.2.2",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "hardened",
+      "content_hash": "274ff4b097a683089875ea2dc370f24e079056ed8f3586fd7b23f6bdf703753c",
+      "sequence": 2
+    },
+    {
+      "id": "001.2",
+      "kind": "phase",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "dd0c349c8a2ffb7dc2248e5b6b4c6577cfb129727dbf75b5c4ec37745bfb992e",
+      "sequence": 2
+    },
+    {
+      "id": "001",
+      "kind": "milestone",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "53d00a297aae23f0cf9611dcf6cdc3747fa827f31e11e7e96fbd741e79d8e8d0",
+      "sequence": 1
+    },
+    {
+      "id": "002.1.1",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "hardened",
+      "content_hash": "f152e8d1bb635a4ff1b482b39f8886123c9271a06bcc3d94a4b90b8f5162202c",
+      "sequence": 1
+    },
+    {
+      "id": "002.1",
+      "kind": "phase",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "3972fe6dcea2093657e2cfd3c014331f600583cf5cdc9b5c54eaf1119ea6f148",
+      "sequence": 1
+    },
+    {
+      "id": "002.2.1",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "aa191cb61aba044f3fde87fb993223d51b56cfb83cf95c75f2bc46bff5557c4e",
+      "sequence": 1
+    },
+    {
+      "id": "002.2.2",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "4572e2e874160100b58fc4134f01d99a5c8bcd536903ed471f052143c92dbae2",
+      "sequence": 2
+    },
+    {
+      "id": "002.2.3",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "0788e0764955570f49943ee903ab9d709f6b5557183802738bd3f50d7f438471",
+      "sequence": 3
+    },
+    {
+      "id": "002.2",
+      "kind": "phase",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "bc08b325295327565d28fa9bbc7e60fbe8cf71f20f3d00209846f523108e7037",
+      "sequence": 2
+    },
+    {
+      "id": "002",
+      "kind": "milestone",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "12952a4bba93410d6d01034a3c34353c8151c9845cba7fa88094792dfeb356d8",
+      "sequence": 2
+    },
+    {
+      "id": "003.1.1",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "aa12ebb84e24bafd3a7df3a816c92438b5b67ba983aaf0f5d0a89049cb8852ff",
+      "sequence": 1
+    },
+    {
+      "id": "003.1.2",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "0bcd8d89d22be806dab2669463c666240a3ab244cd206b09344456733d09b6a4",
+      "sequence": 2
+    },
+    {
+      "id": "003.1",
+      "kind": "phase",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "a955888cc098a401add50810a4ed3d81ae3a0745742befedb11ee519da5706a9",
+      "sequence": 1
+    },
+    {
+      "id": "003.2.1",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "781d3a339d4c74a4f0c1cdca0d76f973f67d0f4d60e1f78dea64654598f57e7e",
+      "sequence": 1
+    },
+    {
+      "id": "003.2.2",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "41f134a6f40727becd44e856942989cada1f63cb3c254ce8b3cafe4aee161de7",
+      "sequence": 2
+    },
+    {
+      "id": "003.2.3",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "e38f063227e875943726440952efb8bab8841f6f821c0f68003f20e3ea48fbe4",
+      "sequence": 3
+    },
+    {
+      "id": "003.2.4",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "a1b9df0ac700e2248cd44836268fddd3dd536eb11d29420e378412d85722949b",
+      "sequence": 4
+    },
+    {
+      "id": "003.2.5",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "dbab5ea54f2febd0bda7875924a60801fa08047ea158025702090806e0e169fe",
+      "sequence": 5
+    },
+    {
+      "id": "003.2",
+      "kind": "phase",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "7219ae620cd5846e214dccc761ef1b5fcde8b97173fcf786907e43a1169604e5",
+      "sequence": 2
+    },
+    {
+      "id": "003",
+      "kind": "milestone",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "0c598ab77d8a40486cf2c1a27a3ce5d16c76ff3fb3d9500f5ec05482d750e5db",
+      "sequence": 3
+    },
+    {
+      "id": "004.1.1",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "dd671b5bd27aab0eb2530e6992b9ca8b00190e567f48901356104af640ffb71f",
+      "sequence": 1
+    },
+    {
+      "id": "004.1",
+      "kind": "phase",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "4b268ce779b81c77a6b326aebd829640ba78c56de6b7ba127b4cfcb00776ae33",
+      "sequence": 1
+    },
+    {
+      "id": "004.2.1",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "d6e93cec7914138ebf483cf429303e95fb8ae86e4f08b4358c1264c7f625bfb3",
+      "sequence": 1
+    },
+    {
+      "id": "004.2",
+      "kind": "phase",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "4d00453a5260e6daf34ba817973a9ac746bed167ed8533c539a66250d8a22d9f",
+      "sequence": 2
+    },
+    {
+      "id": "004.3.1",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "e880c52f85e7c86d8fa7fc38cac966fdc93526d498771711ca0653d4e090dca5",
+      "sequence": 1
+    },
+    {
+      "id": "004.3.2",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "5d10ef6aba165d906bf26a37940741379a9ad8e9e36739178332bfbce8ca6341",
+      "sequence": 2
+    },
+    {
+      "id": "004.3",
+      "kind": "phase",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "eb6596becf4d99ed4e0f3fa767a90eedfd9af98ae7a997500bdf0719bea643de",
+      "sequence": 3
+    },
+    {
+      "id": "004",
+      "kind": "milestone",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "910cddbe3631f75767c0da3ad051cc3f9488d52560f2e6b702f5d7328107e66e",
+      "sequence": 4
+    },
+    {
+      "id": "005.1.1",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "070bf5bd28f6740ba1709a6bab06098e0feb351d700335408a1cf322b6121c4d",
+      "sequence": 1
+    },
+    {
+      "id": "005.1.2",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "f1009816cbd27dce39c337453333b3c9ba76d45a446d6e919e9fd03b11005d5e",
+      "sequence": 2
+    },
+    {
+      "id": "005.1",
+      "kind": "phase",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "dd8768b8d11ea8bd0b746d0620cab50a71a4e7bb4b2db44d6234e6e96dc45f62",
+      "sequence": 1
+    },
+    {
+      "id": "005.2.1",
+      "kind": "user-story",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "rigor": "delivery",
+      "content_hash": "c8bb9095ec42f58c9f15ad4a32cc400be0181aca5c88554a703d2305f755baa2",
+      "sequence": 1
+    },
+    {
+      "id": "005.2",
+      "kind": "phase",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "49679d81af5acba98acd2d44a9165c996b9a0660f7bac7d2df9eb19073ad2970",
+      "sequence": 2
+    },
+    {
+      "id": "005",
+      "kind": "milestone",
+      "status": "todo",
+      "release": "mvp",
+      "system": null,
+      "content_hash": "1e4861fec79a0fac4db032076a87e20db315c3bd1f8833505563745d036671fe",
+      "sequence": 5
+    }
+  ]
+}
