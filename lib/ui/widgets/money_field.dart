@@ -31,7 +31,7 @@ class _MoneyFieldState extends State<MoneyField> {
   static const String _hint = '0,00';
 
   late final TextEditingController _controller = TextEditingController(
-    text: _CentavosInputFormatter.textFor(widget.initialCentavos ?? 0),
+    text: _CentavosInputFormatter.textFor(widget.initialCentavos),
   );
 
   @override
@@ -80,17 +80,32 @@ class _CentavosInputFormatter extends TextInputFormatter {
   const _CentavosInputFormatter();
 
   static final RegExp _nonDigit = RegExp('[^0-9]');
+  static final RegExp _digit = RegExp('[0-9]');
   static final RegExp _leadingZeros = RegExp('^0+');
   static final int _maxDigits = kMaxCentavos.toString().length;
 
   static String _digitsOf(String text) => text.replaceAll(_nonDigit, '');
 
-  static String textFor(int centavos) =>
-      centavos == 0 ? '' : formatCentavosAmount(centavos);
+  static String textFor(int? centavos) =>
+      centavos == null ? '' : formatCentavosAmount(centavos);
 
-  static int? centavosOf(String text) {
-    final centavos = parseDigitsToCentavos(_digitsOf(text));
-    return centavos == 0 ? null : centavos;
+  static int? centavosOf(String text) =>
+      text.isEmpty ? null : parseDigitsToCentavos(_digitsOf(text));
+
+  static bool _typedDigit(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    final oldText = oldValue.text;
+    final newText = newValue.text;
+    final cursor = newValue.selection.end.clamp(0, newText.length);
+    var start = 0;
+    while (start < cursor &&
+        start < oldText.length &&
+        oldText[start] == newText[start]) {
+      start++;
+    }
+    return newText.substring(start, cursor).contains(_digit);
   }
 
   @override
@@ -106,7 +121,8 @@ class _CentavosInputFormatter extends TextInputFormatter {
     if (centavos > kMaxCentavos) {
       return oldValue;
     }
-    final text = textFor(centavos);
+    final isEmpty = centavos == 0 && !_typedDigit(oldValue, newValue);
+    final text = textFor(isEmpty ? null : centavos);
     return TextEditingValue(
       text: text,
       selection: TextSelection.collapsed(offset: text.length),

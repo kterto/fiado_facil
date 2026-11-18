@@ -122,6 +122,54 @@ void main() {
     expect(renderedTextStyle(tester, hint).color, AppColors.textSecondary);
   });
 
+  testWidgets('typing 0 shows 0,00 and reports 0', (tester) async {
+    final reported = await _pumpField(tester);
+
+    await tester.enterText(find.byType(TextField), '0');
+
+    expect(_shownText(tester), '0,00');
+    expect(reported.last, 0);
+  });
+
+  testWidgets('initialCentavos 0 shows and announces 0,00', (tester) async {
+    final handle = tester.ensureSemantics();
+    await _pumpField(tester, initialCentavos: 0);
+
+    expect(_shownText(tester), '0,00');
+    expect(_fieldSemantics(tester).value, '0,00');
+    handle.dispose();
+  });
+
+  testWidgets('initialCentavos null shows an empty field', (tester) async {
+    await _pumpField(tester);
+
+    expect(_shownText(tester), isEmpty);
+  });
+
+  testWidgets('backspace from 0,00 clears the field and reports null', (
+    tester,
+  ) async {
+    final reported = await _pumpField(tester);
+    await tester.enterText(find.byType(TextField), '0');
+    expect(_shownText(tester), '0,00');
+
+    await tester.enterText(find.byType(TextField), '0,0');
+
+    expect(_shownText(tester), isEmpty);
+    expect(reported.last, isNull);
+  });
+
+  testWidgets('backspace from 0,01 clears the field and reports null', (
+    tester,
+  ) async {
+    final reported = await _pumpField(tester, initialCentavos: 1);
+
+    await tester.enterText(find.byType(TextField), '0,0');
+
+    expect(_shownText(tester), isEmpty);
+    expect(reported.last, isNull);
+  });
+
   testWidgets('ignores a keystroke past 99.999,99', (tester) async {
     final reported = await _pumpField(tester);
     await tester.enterText(find.byType(TextField), '9999999');
