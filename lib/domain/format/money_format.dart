@@ -30,11 +30,8 @@ int parseDigitsToCentavos(String digits) {
 String _groupThousands(String digits) {
   final buffer = StringBuffer();
   for (var i = 0; i < digits.length; i++) {
-    final remaining = digits.length - i;
-    if (i > 0 && remaining % 3 == 0) {
-      buffer.write('.');
-    }
-    buffer.write(digits[i]);
+    final separator = i > 0 && (digits.length - i) % 3 == 0 ? '.' : '';
+    buffer.write('$separator${digits[i]}');
   }
   return buffer.toString();
 }
