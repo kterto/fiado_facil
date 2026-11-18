@@ -57,7 +57,13 @@ Phase gate: format check + `flutter analyze` + `flutter test`, scoped to touched
 
 Greenfield — only the Flutter template exists (`lib/main.dart`, `test/widget_test.dart`).
 
-- `lib/` — app; planned layer split presentation / domain / data (exact folder names set by first story).
+- `lib/main.dart` — entry point: portrait lock + `runApp(FiadoFacilApp)`; nothing else.
+- `lib/app.dart` — root `FiadoFacilApp` (`material_ui` `MaterialApp`, pt_BR only, light theme only).
+- `lib/ui/theme/` — presentation: design tokens (`AppColors`, `AppShadows`, `AppSpacing`, `AppRadii`, `AppSizes`), `AppTextStyles`, `buildAppTheme()`.
+- `lib/ui/widgets/` — presentation: reusable design-system widgets (buttons, TopBar, OfflineBanner, fields, MoneyField, snackbar, ConfirmDialog).
+- `lib/ui/screens/` — presentation: screens (`home_screen.dart` placeholder for now).
+- `lib/domain/format/` — domain: integer-centavos money and America/Recife date formatting.
+- `lib/data/` — data layer (repositories); empty until Firebase lands (`.gitkeep`).
 - `test/` — unit/widget tests mirroring `lib/`.
 - `integration_test/` — e2e flows (to be created).
 - `firestore.rules`, `firestore.indexes.json`, `firebase.json` — repo root (to be created).
@@ -69,7 +75,7 @@ Greenfield — only the Flutter template exists (`lib/main.dart`, `test/widget_t
 - Dart: `flutter_lints`; files `snake_case.dart`; no business logic in widgets — domain layer owns rules.
 - Firestore: collections `usuarios`, `clientes`, `lancamentos`, `pagamentos`; field names Portuguese `snake_case` (`valor_centavos`, `registrado_por`, `acima_do_limite`, `cancelado_por`, `nome_busca`, `limite_credito_centavos`).
 - UI copy is **pt-BR**, taken verbatim from `docs/design/*.html` "Textos da tela" tables; screen IDs from the design (`S0`, `A1`, `A3`, `A4`, `T1`, `T1.1`, `T2`, `T3`, `T3.1`).
-- Money shown `R$ 1.234,56`; dates `dd/mm/aaaa`; time zone `America/Recife`.
+- Money shown `R$ 1.234,56` (negative `-R$ 22,10`); dates `dd/mm/aaaa`; time zone `America/Recife`.
 
 ## Invariants
 
