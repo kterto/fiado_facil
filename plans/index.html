@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<title>Plans index</title>
+<style>
+:root {
+  --bg-page:        #faf9f7;
+  --bg-surface:     #f3f1ee;
+  --bg-overlay:     #ece9e4;
+  --text-primary:   #1a1917;
+  --text-secondary: #4a4844;
+  --text-muted:     #8a8680;
+  --accent:         #3730a3;
+  --accent-subtle:  #e0e7ff;
+  --accent-focus:   #4f46e5;
+  --rule:           #d6d2cb;
+  --rule-heavy:     #b5b0a8;
+  --status-success: #166534;
+  --status-success-bg: #dcfce7;
+  --status-active:  #92400e;
+  --status-active-bg: #fef3c7;
+  --status-warning: #9a3412;
+  --status-warning-bg: #ffedd5;
+  --status-danger:  #991b1b;
+  --status-danger-bg: #fee2e2;
+  --status-muted:   #374151;
+  --status-muted-bg: #f3f4f6;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                "Helvetica Neue", Arial, sans-serif;
+  --font-mono:  ui-monospace, "SF Mono", "Cascadia Code", "Fira Mono",
+                Menlo, Consolas, monospace;
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.25rem;
+  --text-2xl:  1.5rem;
+  --text-3xl:  2rem;
+  --sp-1:  0.25rem;
+  --sp-2:  0.5rem;
+  --sp-3:  0.75rem;
+  --sp-4:  1rem;
+  --sp-6:  1.5rem;
+  --sp-8:  2rem;
+  --sp-12: 3rem;
+  --sp-16: 4rem;
+  --measure: 70ch;
+  --line-height-body: 1.65;
+  --line-height-heading: 1.2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-page:        #141312;
+    --bg-surface:     #1e1c1a;
+    --bg-overlay:     #272420;
+    --text-primary:   #f0ece6;
+    --text-secondary: #b8b3ab;
+    --text-muted:     #7a7570;
+    --accent:         #818cf8;
+    --accent-subtle:  #1e1b4b;
+    --accent-focus:   #a5b4fc;
+    --rule:           #2e2b28;
+    --rule-heavy:     #3d3a36;
+    --status-success: #86efac;
+    --status-success-bg: #14532d;
+    --status-active:  #fcd34d;
+    --status-active-bg: #451a03;
+    --status-warning: #fb923c;
+    --status-warning-bg: #431407;
+    --status-danger:  #fca5a5;
+    --status-danger-bg: #450a0a;
+    --status-muted:   #9ca3af;
+    --status-muted-bg: #1f2937;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--line-height-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+main { max-width: 72rem; margin: 0 auto; padding: var(--sp-16) var(--sp-8); }
+@media (max-width: 640px) { main { padding: var(--sp-12) var(--sp-4); } }
+
+::selection { background: var(--accent-subtle); color: var(--accent); }
+a { color: var(--accent); }
+
+.masthead__kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  margin: 0 0 var(--sp-2);
+}
+
+h1 {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  line-height: var(--line-height-heading);
+  margin: 0 0 var(--sp-4);
+}
+
+h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  line-height: var(--line-height-heading);
+  margin: 0 0 var(--sp-2);
+}
+
+h3 {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 0 0 var(--sp-2);
+}
+
+.masthead__lede { max-width: var(--measure); color: var(--text-secondary); margin: 0; }
+.note { color: var(--text-muted); font-size: var(--text-sm); max-width: var(--measure); margin: 0 0 var(--sp-4); }
+.empty { color: var(--text-muted); font-size: var(--text-sm); font-style: italic; }
+code { font-family: var(--font-mono); font-size: 0.9em; }
+
+.count {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  vertical-align: middle;
+}
+
+.badge {
+  font-family: var(--font-mono);
+  background: var(--accent-subtle);
+  color: var(--accent);
+  font-size: var(--text-xs);
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  background: var(--bg-overlay);
+  color: var(--text-secondary);
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/*
+ * A family title is prose, not a token: it runs to 57 characters in the measured
+ * corpus, and inheriting the nowrap above made every row in Recent set a minimum
+ * width wider than a phone and scroll the whole page sideways.
+ */
+.tag--fam { background: transparent; color: var(--text-muted); padding: 0; white-space: normal; overflow-wrap: anywhere; }
+
+/* Weaker evidence, drawn weaker: outlined rather than filled, so a prose mention
+   never reads with the confidence of a reference key. */
+.tag--weak { background: transparent; color: var(--text-muted); border: 1px dashed var(--rule-heavy); padding: 0 5px; }
+
+/* An unresolved ambiguity is a defect in the tree, not a fact about the artifact. */
+.tag--warn { background: var(--status-warning-bg); color: var(--status-warning); }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  line-height: 1.6;
+  flex: none;
+}
+
+.pill::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+
+.pill--success { background: var(--status-success-bg); color: var(--status-success); }
+.pill--active  { background: var(--status-active-bg);  color: var(--status-active);  }
+.pill--warning { background: var(--status-warning-bg); color: var(--status-warning); }
+.pill--danger  { background: var(--status-danger-bg);  color: var(--status-danger);  }
+.pill--muted   { background: var(--status-muted-bg);   color: var(--status-muted);   }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--sp-3);
+  margin-top: var(--sp-8);
+}
+
+.stat {
+  background: var(--bg-surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.stat--warning { border-color: var(--status-warning); }
+.stat--danger { border-color: var(--status-danger); }
+
+.stat__value {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  line-height: 1;
+}
+
+.stat--warning .stat__value { color: var(--status-warning); }
+.stat--danger .stat__value { color: var(--status-danger); }
+
+.stat__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.section { margin-top: var(--sp-12); }
+
+details { border-top: 1px solid var(--rule); }
+
+summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  padding: var(--sp-3) 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  user-select: none;
+}
+
+summary::-webkit-details-marker { display: none; }
+
+summary::before {
+  content: "\25B6";
+  font-size: 0.7em;
+  color: var(--accent);
+  transition: transform 0.18s ease;
+  flex: none;
+}
+
+details[open] > summary::before { transform: rotate(90deg); }
+
+summary:focus-visible { outline: 2px solid var(--accent-focus); outline-offset: 3px; border-radius: 3px; }
+
+/*
+ * A nowrap flex row cannot shrink below the sum of its children, so at 360px the
+ * facts line — pill, counts, date span, and now the provenance tags — set a minimum
+ * wider than the viewport. Wrapping makes its minimum the widest single child (the
+ * status pill) instead, which fits.
+ */
+.summary__meta {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: var(--sp-2) var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.family--open > summary { color: var(--status-danger); }
+.family--open > summary::before { color: var(--status-danger); }
+.family__title { flex: 1 1 22rem; min-width: 0; }
+
+.family__ident {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.family__slug { overflow-wrap: anywhere; }
+
+.details__body {
+  border-left: 3px solid var(--accent);
+  padding-left: var(--sp-4);
+  margin: 0 0 var(--sp-6) 2px;
+}
+
+.family--open > .details__body { border-left-color: var(--status-danger); }
+
+.rows, .open-list { list-style: none; margin: 0; padding: 0; }
+
+.row, .open-list li {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-3);
+  padding: var(--sp-2) 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: var(--text-sm);
+}
+
+.row:last-child { border-bottom: none; }
+
+/*
+ * "flex: none" kept the id intact at every width, including widths where it did not
+ * fit: a legacy basename used as an id runs to 56 characters
+ * (P0-admin-revoke-store-premium-guarantee-20260826T144914Z) and pushed the page
+ * 82px past a 360px viewport. "0 1 auto" still refuses to shrink while there is
+ * room, so nothing changes on a desktop.
+ */
+.row__id { font-family: var(--font-mono); font-size: var(--text-xs); text-decoration: none; flex: 0 1 auto; min-width: 0; overflow-wrap: anywhere; }
+.row__id:hover { text-decoration: underline; }
+.row__title { color: var(--text-primary); flex: 1 1 20rem; min-width: 0; }
+
+.row__meta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+}
+
+.shape { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--sp-8); margin-bottom: var(--sp-4); }
+
+.counts { border-collapse: collapse; font-family: var(--font-mono); font-size: var(--text-sm); width: 100%; }
+
+/*
+ * A directory key is a path, and a nested tree produces unbroken 44-character ones
+ * such as specs/evaluations/SPEC-20260805T174719Z-6b85. Without a break opportunity
+ * the cell's min-content width is that whole string, which pushes the table — and
+ * the page with it — past 360px. "anywhere" is the value that also shrinks
+ * min-content; "break-word" still reserves the full width when computing
+ * intrinsic size, so the table would overflow exactly as before.
+ */
+.counts th { text-align: left; font-weight: 400; color: var(--text-secondary); padding: var(--sp-1) 0; overflow-wrap: anywhere; }
+.counts td { text-align: right; color: var(--text-primary); padding: var(--sp-1) 0; }
+.counts tr + tr th, .counts tr + tr td { border-top: 1px solid var(--rule); }
+</style>
+</head>
+<body>
+<main>
+<header class="masthead">
+<p class="masthead__kicker"><span>Pipeline index</span></p>
+<h1>Plans index</h1>
+<p class="masthead__lede">Every artifact under this tree, grouped into the family of the spec it answers &mdash; across all the runs that touched it. Families resolve from <code>related_to</code>, from a review's <code>plan:</code> provenance, and transitively through both; only the <em>first</em> spec id an artifact names is its own, the rest are prior art. Where no key resolves, a spec id in the artifact's own prose attaches it and the row says <span class="tag tag--weak">by mention</span>, because a grep hit is weaker evidence than a key. Nothing is inferred from a slug or from timestamp adjacency; what does not resolve is listed as unattached.</p>
+</header>
+
+<section class="stats">
+<div class="stat"><span class="stat__value" data-stat="artifacts">10</span><span class="stat__label">Artifacts</span></div>
+<div class="stat"><span class="stat__value" data-stat="families">1</span><span class="stat__label">Families</span></div>
+<div class="stat"><span class="stat__value" data-stat="open">0</span><span class="stat__label">Open now</span></div>
+<div class="stat"><span class="stat__value" data-stat="shared">0</span><span class="stat__label">Shared</span></div>
+<div class="stat"><span class="stat__value" data-stat="mentioned">0</span><span class="stat__label">By mention</span></div>
+<div class="stat"><span class="stat__value" data-stat="unattached">0</span><span class="stat__label">Unattached</span></div>
+</section>
+
+<section class="section" id="open">
+<h2>Open right now</h2>
+<p class="note">Families whose newest artifact is a review asking for changes, or a QA report that blocked the commit.</p>
+<p class="empty">Nothing is mid-flight: no family ends on a review asking for changes or a blocked QA report.</p>
+</section>
+
+<section class="section" id="families">
+<h2>Families <span class="count">1</span></h2>
+<p class="note">Newest activity first. Each opens to its artifacts in the order they were written.</p>
+<details class="family" data-family="SPEC-20261118T003116Z-37ec">
+<summary><span class="family__title">App skeleton and design-system foundation (roadmap story 001.1.1)</span><span class="family__ident"><span class="badge">SPEC-20261118T003116Z-37ec</span><span class="family__slug">app-skeleton-design-system-foundation</span></span><span class="summary__meta"><span class="pill pill--success">READY_TO_COMMIT</span> 10 artifacts &middot; 2026-11-18 &rarr; 2026-11-18 &middot; 2 review cycles</span></summary>
+<div class="details__body">
+<ol class="rows">
+<li class="row" data-id="SPEC-20261118T003116Z-37ec"><span class="pill pill--success">READY_FOR_PLANNING</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/SPEC-20261118T003116Z-37ec-app-skeleton-design-system-foundation.md" title="App skeleton and design-system foundation (roadmap story 001.1.1)">SPEC-20261118T003116Z-37ec</a><span class="row__title">App skeleton and design-system foundation (roadmap story 001.1.1)</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation</span></li>
+<li class="row" data-id="FEAT-20261118T003620Z-890e"><span class="pill pill--success">DONE</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/FEAT-20261118T003620Z-890e-app-skeleton-design-system-foundation.md" title="App skeleton and design-system foundation (roadmap story 001.1.1)">FEAT-20261118T003620Z-890e</a><span class="row__title">App skeleton and design-system foundation (roadmap story 001.1.1)</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <a href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/FEAT-20261118T003620Z-890e-app-skeleton-design-system-foundation.progress.md">log</a></span></li>
+<li class="row" data-id="TEST-20261118T013640Z-10cb"><span class="pill pill--warning">BELOW_FLOOR</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/TEST-20261118T013640Z-10cb-app-skeleton-design-system-foundation.md" title="Test Report — App skeleton and design-system foundation (roadmap story 001.1.1)">TEST-20261118T013640Z-10cb</a><span class="row__title">Test Report — App skeleton and design-system foundation (roadmap story 001.1.1)</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation</span></li>
+<li class="row" data-id="CR-20261118T014808Z-817a"><span class="pill pill--danger">REQUEST_CHANGES</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/CR-20261118T014808Z-817a-app-skeleton-design-system-foundation.md" title="Review of App skeleton and design-system foundation (roadmap story 001.1.1)">CR-20261118T014808Z-817a</a><span class="row__title">Review of App skeleton and design-system foundation (roadmap story 001.1.1)</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag">cycle 1</span></span></li>
+<li class="row" data-id="FIX-20261118T015535Z-d340"><span class="pill pill--success">DONE</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/FIX-20261118T015535Z-d340-field-accessible-name-money-fixes.md" title="Field accessible name (TalkBack) plus money-format and max-guard fixes">FIX-20261118T015535Z-d340</a><span class="row__title">Field accessible name (TalkBack) plus money-format and max-guard fixes</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <a href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/FIX-20261118T015535Z-d340-field-accessible-name-money-fixes.progress.md">log</a></span></li>
+<li class="row" data-id="TEST-20261118T020911Z-1cc6"><span class="pill pill--warning">BELOW_FLOOR</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/TEST-20261118T020911Z-1cc6-field-accessible-name-money-fixes.md" title="Test Report — Field accessible name (TalkBack) plus money-format and max-guard fixes">TEST-20261118T020911Z-1cc6</a><span class="row__title">Test Report — Field accessible name (TalkBack) plus money-format and max-guard fixes</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation</span></li>
+<li class="row" data-id="CR-20261118T023725Z-ebb0"><span class="pill pill--success">APPROVED</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/CR-20261118T023725Z-ebb0-field-accessible-name-money-fixes.md" title="Review of Field accessible name (TalkBack) plus money-format and max-guard fixes">CR-20261118T023725Z-ebb0</a><span class="row__title">Review of Field accessible name (TalkBack) plus money-format and max-guard fixes</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag">cycle 2</span></span></li>
+<li class="row" data-id="EVAL-20261118T024552Z-136c"><span class="pill pill--warning">ISSUES</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/EVAL-20261118T024552Z-136c-app-skeleton-design-system-foundation.md" title="Evaluation — P0 (ASSUMED): App skeleton and design-system foundation (roadmap story 001.1.1)">EVAL-20261118T024552Z-136c</a><span class="row__title">Evaluation — P0 (ASSUMED): App skeleton and design-system foundation (roadmap story 001.1.1)</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag">cycle 1</span></span></li>
+<li class="row" data-id="QA-20261118T100301Z-be01"><span class="pill pill--success">READY_TO_COMMIT</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/QA-20261118T100301Z-be01-field-accessible-name-money-fixes.md" title="QA Report — Field accessible name (TalkBack) plus money-format and max-guard fixes">QA-20261118T100301Z-be01</a><span class="row__title">QA Report — Field accessible name (TalkBack) plus money-format and max-guard fixes</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation</span></li>
+<li class="row" data-id="FINAL-20261118T100819Z-83b1"><span class="pill pill--success">READY_TO_COMMIT</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/FINAL-20261118T100819Z-83b1-app-skeleton-design-system-foundation.md" title="Final report — story 001.1.1, app skeleton and design-system foundation">FINAL-20261118T100819Z-83b1</a><span class="row__title">Final report — story 001.1.1, app skeleton and design-system foundation</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag">cycle 2</span></span></li>
+</ol>
+</div>
+</details>
+
+</section>
+
+<section class="section" id="recent">
+<h2>Recent <span class="count">10</span></h2>
+<p class="note">All 10 artifacts, newest first.</p>
+<ol class="rows">
+<li class="row" data-id="FINAL-20261118T100819Z-83b1"><span class="pill pill--success">READY_TO_COMMIT</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/FINAL-20261118T100819Z-83b1-app-skeleton-design-system-foundation.md" title="Final report — story 001.1.1, app skeleton and design-system foundation">FINAL-20261118T100819Z-83b1</a><span class="row__title">Final report — story 001.1.1, app skeleton and design-system foundation</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag">cycle 2</span> &middot; <span class="tag tag--fam">App skeleton and design-system foundation (roadmap story 001.1.1)</span></span></li>
+<li class="row" data-id="QA-20261118T100301Z-be01"><span class="pill pill--success">READY_TO_COMMIT</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/QA-20261118T100301Z-be01-field-accessible-name-money-fixes.md" title="QA Report — Field accessible name (TalkBack) plus money-format and max-guard fixes">QA-20261118T100301Z-be01</a><span class="row__title">QA Report — Field accessible name (TalkBack) plus money-format and max-guard fixes</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag tag--fam">App skeleton and design-system foundation (roadmap story 001.1.1)</span></span></li>
+<li class="row" data-id="EVAL-20261118T024552Z-136c"><span class="pill pill--warning">ISSUES</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/EVAL-20261118T024552Z-136c-app-skeleton-design-system-foundation.md" title="Evaluation — P0 (ASSUMED): App skeleton and design-system foundation (roadmap story 001.1.1)">EVAL-20261118T024552Z-136c</a><span class="row__title">Evaluation — P0 (ASSUMED): App skeleton and design-system foundation (roadmap story 001.1.1)</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag">cycle 1</span> &middot; <span class="tag tag--fam">App skeleton and design-system foundation (roadmap story 001.1.1)</span></span></li>
+<li class="row" data-id="CR-20261118T023725Z-ebb0"><span class="pill pill--success">APPROVED</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/CR-20261118T023725Z-ebb0-field-accessible-name-money-fixes.md" title="Review of Field accessible name (TalkBack) plus money-format and max-guard fixes">CR-20261118T023725Z-ebb0</a><span class="row__title">Review of Field accessible name (TalkBack) plus money-format and max-guard fixes</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag">cycle 2</span> &middot; <span class="tag tag--fam">App skeleton and design-system foundation (roadmap story 001.1.1)</span></span></li>
+<li class="row" data-id="TEST-20261118T020911Z-1cc6"><span class="pill pill--warning">BELOW_FLOOR</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/TEST-20261118T020911Z-1cc6-field-accessible-name-money-fixes.md" title="Test Report — Field accessible name (TalkBack) plus money-format and max-guard fixes">TEST-20261118T020911Z-1cc6</a><span class="row__title">Test Report — Field accessible name (TalkBack) plus money-format and max-guard fixes</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag tag--fam">App skeleton and design-system foundation (roadmap story 001.1.1)</span></span></li>
+<li class="row" data-id="FIX-20261118T015535Z-d340"><span class="pill pill--success">DONE</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/FIX-20261118T015535Z-d340-field-accessible-name-money-fixes.md" title="Field accessible name (TalkBack) plus money-format and max-guard fixes">FIX-20261118T015535Z-d340</a><span class="row__title">Field accessible name (TalkBack) plus money-format and max-guard fixes</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <a href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/FIX-20261118T015535Z-d340-field-accessible-name-money-fixes.progress.md">log</a> &middot; <span class="tag tag--fam">App skeleton and design-system foundation (roadmap story 001.1.1)</span></span></li>
+<li class="row" data-id="CR-20261118T014808Z-817a"><span class="pill pill--danger">REQUEST_CHANGES</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/CR-20261118T014808Z-817a-app-skeleton-design-system-foundation.md" title="Review of App skeleton and design-system foundation (roadmap story 001.1.1)">CR-20261118T014808Z-817a</a><span class="row__title">Review of App skeleton and design-system foundation (roadmap story 001.1.1)</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag">cycle 1</span> &middot; <span class="tag tag--fam">App skeleton and design-system foundation (roadmap story 001.1.1)</span></span></li>
+<li class="row" data-id="TEST-20261118T013640Z-10cb"><span class="pill pill--warning">BELOW_FLOOR</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/TEST-20261118T013640Z-10cb-app-skeleton-design-system-foundation.md" title="Test Report — App skeleton and design-system foundation (roadmap story 001.1.1)">TEST-20261118T013640Z-10cb</a><span class="row__title">Test Report — App skeleton and design-system foundation (roadmap story 001.1.1)</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag tag--fam">App skeleton and design-system foundation (roadmap story 001.1.1)</span></span></li>
+<li class="row" data-id="FEAT-20261118T003620Z-890e"><span class="pill pill--success">DONE</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/FEAT-20261118T003620Z-890e-app-skeleton-design-system-foundation.md" title="App skeleton and design-system foundation (roadmap story 001.1.1)">FEAT-20261118T003620Z-890e</a><span class="row__title">App skeleton and design-system foundation (roadmap story 001.1.1)</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <a href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/FEAT-20261118T003620Z-890e-app-skeleton-design-system-foundation.progress.md">log</a> &middot; <span class="tag tag--fam">App skeleton and design-system foundation (roadmap story 001.1.1)</span></span></li>
+<li class="row" data-id="SPEC-20261118T003116Z-37ec"><span class="pill pill--success">READY_FOR_PLANNING</span><a class="row__id" href="20261118T003106Z-f72c-app-skeleton-design-system-foundation/SPEC-20261118T003116Z-37ec-app-skeleton-design-system-foundation.md" title="App skeleton and design-system foundation (roadmap story 001.1.1)">SPEC-20261118T003116Z-37ec</a><span class="row__title">App skeleton and design-system foundation (roadmap story 001.1.1)</span><span class="row__meta">2026-11-18 &middot; 20261118T003106Z-f72c-app-skeleton-design-system-foundation &middot; <span class="tag tag--fam">App skeleton and design-system foundation (roadmap story 001.1.1)</span></span></li>
+</ol>
+
+</section>
+
+<section class="section" id="unattached">
+<h2>Unattached <span class="count">0</span></h2>
+<p class="empty">Every artifact resolves to a family.</p>
+</section>
+
+<section class="section" id="shape">
+<h2>Shape of the corpus</h2>
+<div class="shape">
+<div><h3>By prefix</h3><table class="counts"><tbody>
+<tr><th>SPEC</th><td data-prefix="SPEC">1</td></tr>
+<tr><th>FEAT</th><td data-prefix="FEAT">1</td></tr>
+<tr><th>FIX</th><td data-prefix="FIX">1</td></tr>
+<tr><th>TEST</th><td data-prefix="TEST">2</td></tr>
+<tr><th>CR</th><td data-prefix="CR">2</td></tr>
+<tr><th>QA</th><td data-prefix="QA">1</td></tr>
+<tr><th>EVAL</th><td data-prefix="EVAL">1</td></tr>
+<tr><th>FINAL</th><td data-prefix="FINAL">1</td></tr>
+</tbody></table></div>
+<div><h3>By directory</h3><table class="counts"><tbody>
+<tr><th>20261118T003106Z-f72c-app-skeleton-design-system-foundation</th><td data-dir="20261118T003106Z-f72c-app-skeleton-design-system-foundation">10</td></tr>
+</tbody></table></div>
+</div>
+<p class="note">Generated by <code>index-plans.cjs</code>. It is a read view: regenerate it, never hand-edit it. No generation timestamp is recorded, so an unchanged tree always produces an identical file.</p>
+</section>
+</main>
+</body>
+</html>
