@@ -187,6 +187,30 @@ Coverage still below the configured G1 thresholds after best effort. See report.
 Suite: executed `flutter test --coverage` at tree f3ee03a46ac43f8bc25369a27757149fffd94381 — 229/229 pass; ledger row appended (at 2026-11-18T02:27:58Z). Not inherited: only prior row for this artifact is at tree 59a584a5 (stale).
 Retry note: the interrupted attempt added `test/ui/widgets/field_semantics_form_test.dart` (5 tests); audited, defect-probed, kept unchanged.
 
+### 2026-11-18T02:44:05Z | REVIEWER
+
+Code review complete.
+CR: plans/20261118T003106Z-f72c-app-skeleton-design-system-foundation/CR-20261118T023725Z-ebb0-field-accessible-name-money-fixes.md
+Status: APPROVED
+Must Fix: 0 | Should Fix: 1
+Ready for QA — invoke /qa with plan ID FIX-20261118T015535Z-d340.
+
+### 2026-11-18T09:59:28Z | CODER — FIX (operator-directed, eval gaps FR-5.5/FR-5.7)
+
+Source: EVAL-20261118T024552Z-136c `## Gaps (ranked)` items 1-2. No new plan artifact; TDD red -> green.
+
+- FR-5.5 `lib/ui/widgets/money_field.dart`: `null` only when the field is empty. A zero result keeps `0,00` when the edit inserted a digit (typing `0`), and clears to empty when it only removed text (backspace from `0,00` / `0,01`). `initialCentavos: 0` renders `0,00`, `null` renders empty. Max/overflow guards unchanged.
+  Red: `typing 0` and `initialCentavos 0` expected `0,00`, got `''`; `backspace from 0,00` failed at its precondition.
+- FR-5.7 `lib/ui/widgets/confirm_dialog.dart`: `Dialog(semanticsRole: SemanticsRole.alertDialog)` (material_ui 1.11.1 `dialog.dart:98`; `SemanticsRole` from `package:flutter/semantics.dart`, which material_ui does not re-export).
+  Red: `semantics expose the dialog as an alert dialog` found 0 alertDialog nodes.
+- Tests: +5 in `test/ui/widgets/money_field_test.dart`, +1 in `test/ui/widgets/confirm_dialog_test.dart`. No existing test changed. The spec does not contradict any old assertion.
+- SF-1 (`addTearDown(handle.dispose)`) tried and reverted. flutter_test checks for live SemanticsHandles in `_endOfTestVerifications`, before tear-downs run, so the tests fail. Kept the explicit `handle.dispose()`.
+
+Gates (repo root):
+- `dart format --output=none --set-exit-if-changed lib test`: exit 0, 37 files, 0 changed
+- `flutter analyze`: exit 0, No issues found
+- `flutter test`: exit 0, +235 All tests passed
+
 ---
 
 ## Handoff
