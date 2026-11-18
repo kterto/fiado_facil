@@ -1,3 +1,4 @@
+import 'package:flutter/semantics.dart';
 import 'package:material_ui/material_ui.dart';
 
 import '../theme/app_colors.dart';
@@ -69,6 +70,7 @@ class _ConfirmDialog extends StatelessWidget {
     };
     final headIcon = icon;
     return Dialog(
+      semanticsRole: SemanticsRole.alertDialog,
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,

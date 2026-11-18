@@ -2,6 +2,7 @@ import 'package:fiado_facil/ui/theme/app_colors.dart';
 import 'package:fiado_facil/ui/theme/app_text_styles.dart';
 import 'package:fiado_facil/ui/widgets/app_button.dart';
 import 'package:fiado_facil/ui/widgets/confirm_dialog.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -279,6 +280,25 @@ void main() {
             node.flagsCollection.namesRoute,
       ),
       findsOneWidget,
+    );
+    handle.dispose();
+  });
+
+  testWidgets('semantics expose the dialog as an alert dialog', (tester) async {
+    final handle = tester.ensureSemantics();
+    await _open(tester);
+
+    expect(
+      find.semantics.byPredicate(
+        (node) => node.getSemanticsData().role == SemanticsRole.alertDialog,
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.semantics.byPredicate(
+        (node) => node.getSemanticsData().role == SemanticsRole.dialog,
+      ),
+      findsNothing,
     );
     handle.dispose();
   });
