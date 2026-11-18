@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registrar pagamento · Fiado Fácil</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0&display=block');
+
+body { margin: 0; font-family: var(--font-sans); background: var(--bg); color: var(--text-primary); -webkit-font-smoothing: antialiased; }
+.ff-frame { width: 360px; box-sizing: border-box; padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); }
+.ff-frame.flush { padding: 0; }
+
+.ff-icon { font-family: 'Material Symbols Rounded'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1; letter-spacing: normal; text-transform: none; white-space: nowrap; direction: ltr; -webkit-font-feature-settings: 'liga'; font-feature-settings: 'liga'; display: inline-block; flex: none; }
+
+/* Button */
+.ff-btn { font-family: var(--font-sans); font-size: 18px; line-height: 24px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: var(--button-height); width: 100%; box-sizing: border-box; padding: 0 var(--space-4); border-radius: var(--radius-md); border: 1px solid transparent; cursor: pointer; }
+.ff-btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ff-btn-primary { background: var(--primary); color: var(--on-primary); }
+.ff-btn-primary:active, .ff-btn-primary.is-pressed { background: var(--primary-pressed); }
+.ff-btn-secondary { background: var(--surface); color: var(--primary); border-color: var(--primary); }
+.ff-btn-text { background: none; color: var(--primary); min-height: var(--touch-min); width: auto; padding: 0 var(--space-2); }
+.ff-btn[disabled] { background: var(--disabled-bg); color: var(--text-secondary); border-color: var(--disabled-bg); cursor: not-allowed; }
+.ff-btn-reason { font-size: 15px; line-height: 20px; color: var(--text-secondary); margin: 0; }
+
+/* TopBar */
+.ff-topbar { display: flex; align-items: center; justify-content: space-between; min-height: var(--topbar-height); padding: 0 var(--space-2) 0 var(--space-4); background: var(--bg); box-sizing: border-box; }
+.ff-topbar.has-back { padding-left: var(--space-1); }
+.ff-topbar-title { font-size: 22px; line-height: 28px; font-weight: 700; margin: 0; }
+.ff-topbar-left { display: flex; align-items: center; gap: var(--space-1); min-width: 0; }
+.ff-topbar-right { display: flex; align-items: center; gap: var(--space-1); }
+.ff-topbar-user { font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+
+/* OfflineBanner */
+.ff-banner { display: flex; align-items: center; gap: var(--space-3); min-height: var(--touch-min); padding: var(--space-2) var(--space-4); background: var(--info-container); color: var(--text-primary); font-size: 16px; line-height: 24px; box-sizing: border-box; }
+.ff-banner .ff-icon { color: var(--info); }
+
+/* Fields */
+.ff-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.ff-label { font-size: 18px; line-height: 24px; font-weight: 700; color: var(--text-primary); }
+.ff-label-opt { font-weight: 400; color: var(--text-secondary); }
+.ff-input { display: flex; align-items: center; gap: var(--space-2); min-height: var(--field-height); padding: 0 var(--space-3); background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); box-sizing: border-box; font-size: 18px; line-height: 26px; color: var(--text-primary); }
+.ff-input .ff-icon { color: var(--border); }
+.ff-input.is-focus { border: 2px solid var(--primary); padding: 0 calc(var(--space-3) - 1px); }
+.ff-input.is-error { border: 2px solid var(--error); padding: 0 calc(var(--space-3) - 1px); }
+.ff-input-text { flex: 1; min-width: 0; }
+.ff-input-placeholder { color: var(--text-secondary); }
+.ff-input-clear { color: var(--text-secondary); }
+.ff-money { min-height: var(--amount-field-height); }
+.ff-money-prefix { font-size: 22px; line-height: 28px; font-weight: 700; color: var(--text-secondary); }
+.ff-money-value { flex: 1; text-align: right; font-size: 28px; line-height: 36px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ff-counter { align-self: flex-end; font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+.ff-error { display: flex; align-items: flex-start; gap: var(--space-2); color: var(--error); font-size: 16px; line-height: 24px; margin: 0; }
+.ff-error .ff-icon { font-size: 20px; margin-top: 2px; }
+
+/* ClientItem */
+.ff-client { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: var(--list-item-min); padding: var(--space-3) var(--space-4); background: var(--surface); border-bottom: 1px solid var(--divider); box-sizing: border-box; cursor: pointer; }
+.ff-client:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.ff-client-name { font-size: 18px; line-height: 26px; color: var(--text-primary); }
+.ff-client-balance { font-size: 18px; line-height: 24px; font-weight: 700; text-align: right; white-space: nowrap; color: var(--text-primary); }
+.ff-client-balance.is-zero { font-weight: 400; color: var(--text-secondary); }
+.ff-client-balance.is-credit { color: var(--primary); }
+
+/* BalanceHeader */
+.ff-balance { background: var(--surface); border-radius: var(--radius-md); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-1); border: 1px solid var(--divider); }
+.ff-balance.is-credit { background: var(--primary-container); border-color: var(--primary-container); }
+.ff-balance-name { font-size: 22px; line-height: 28px; font-weight: 700; margin: 0; }
+.ff-balance-phone { font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+.ff-balance-kind { font-size: 18px; line-height: 24px; font-weight: 700; margin-top: var(--space-3); }
+.ff-balance-value { font-size: 32px; line-height: 40px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ff-balance-note { display: flex; align-items: center; gap: var(--space-1); font-size: 15px; line-height: 20px; color: var(--on-warning); margin-top: var(--space-1); }
+.ff-balance-note .ff-icon { font-size: 20px; }
+.ff-balance-pending { display: flex; align-items: center; gap: var(--space-1); font-size: 15px; line-height: 20px; color: var(--info); }
+.ff-balance-pending .ff-icon { font-size: 20px; }
+
+/* HistoryItem */
+.ff-hist { display: flex; flex-direction: column; gap: 2px; min-height: var(--list-item-min); padding: var(--space-3) var(--space-4); background: var(--surface); border-bottom: 1px solid var(--divider); box-sizing: border-box; }
+.ff-hist-row { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+.ff-hist-type { font-size: 18px; line-height: 24px; font-weight: 700; }
+.ff-hist-value { font-size: 18px; line-height: 24px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ff-hist-meta { font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+.ff-hist.is-canceled .ff-hist-type, .ff-hist.is-canceled .ff-hist-value, .ff-hist.is-canceled .ff-hist-meta-main { text-decoration: line-through; color: var(--text-secondary); font-weight: 400; }
+.ff-hist-canceled { font-size: 15px; line-height: 20px; color: var(--text-secondary); font-weight: 700; }
+
+/* LimitAlert */
+.ff-alert { background: var(--warning-container); border: 2px solid var(--on-warning); border-radius: var(--radius-lg); padding: var(--space-6) var(--space-5) var(--space-5); box-shadow: var(--shadow-dialog); display: flex; flex-direction: column; gap: var(--space-3); box-sizing: border-box; }
+.ff-alert-head { display: flex; align-items: center; gap: var(--space-2); color: var(--on-warning); }
+.ff-alert-head .ff-icon { font-size: 32px; }
+.ff-alert-title { font-size: 22px; line-height: 28px; font-weight: 700; margin: 0; color: var(--on-warning); }
+.ff-alert-body { font-size: 18px; line-height: 26px; margin: 0; color: var(--text-primary); }
+.ff-alert-actions { display: flex; flex-direction: column; gap: var(--space-2); margin-top: var(--space-2); }
+
+/* Snackbar */
+.ff-snack { display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-3) var(--space-4); background: var(--primary-container); color: var(--text-primary); border-radius: var(--radius-md); font-size: 16px; line-height: 24px; box-shadow: var(--shadow-dialog); }
+.ff-snack .ff-icon { color: var(--primary); }
+
+/* Section heading used in screens */
+.ff-section { font-size: 18px; line-height: 24px; font-weight: 700; margin: var(--space-6) var(--space-4) var(--space-2); }
+
+</style>
+<style>
+/* Fiado Fácil — generated from tokens.json */
+:root, [data-theme="light"] {
+  --bg: #f7f5f1;
+  --surface: #ffffff;
+  --text-primary: #1c1b1a;
+  --text-secondary: #4f4b45;
+  --border: #7a746b;
+  --divider: #e3dfd8;
+  --primary: #1e6b43;
+  --primary-pressed: #17573a;
+  --on-primary: #ffffff;
+  --primary-container: #e6f2ea;
+  --warning-container: #fff3d6;
+  --on-warning: #6b4500;
+  --error: #b3261e;
+  --error-container: #fdecea;
+  --info: #1e4e8c;
+  --info-container: #e8f0fb;
+  --focus: #1e6b43;
+  --disabled-bg: #d9d5ce;
+  --scrim: #1c1b1a66;
+  --shadow-dialog: 0 4px 16px rgba(28, 27, 26, 0.18);
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --touch-min: 48px;
+  --button-height: 56px;
+  --field-height: 56px;
+  --amount-field-height: 72px;
+  --list-item-min: 64px;
+  --topbar-height: 64px;
+  --font-sans: "Atkinson Hyperlegible", Roboto, system-ui, sans-serif;
+}
+.type-balance { font-family: var(--font-sans); font-size: 32px; line-height: 40px; font-weight: 700; }
+.type-amount-input { font-family: var(--font-sans); font-size: 28px; line-height: 36px; font-weight: 700; }
+.type-title { font-family: var(--font-sans); font-size: 22px; line-height: 28px; font-weight: 700; }
+.type-label { font-family: var(--font-sans); font-size: 18px; line-height: 24px; font-weight: 700; }
+.type-body-lg { font-family: var(--font-sans); font-size: 18px; line-height: 26px; font-weight: 400; }
+.type-body { font-family: var(--font-sans); font-size: 16px; line-height: 24px; font-weight: 400; }
+.type-meta { font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 400; }
+
+</style>
+<style>
+/* Estilos do documento (moldura e páginas). Usam apenas tokens do design system. */
+html { background: var(--bg); }
+body { color: var(--text-primary); }
+.doc { max-width: 1180px; margin: 0 auto; padding: 40px 32px 80px; }
+.doc-nav { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 16px; line-height: 24px; margin-bottom: 32px; }
+.doc-nav a { color: var(--primary); font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; min-height: 48px; }
+.doc-nav a:hover { text-decoration: underline; }
+.doc-kicker { font-size: 15px; line-height: 20px; color: var(--text-secondary); margin: 0 0 8px; letter-spacing: .02em; }
+:where(.doc) h1 { font-size: 40px; line-height: 48px; margin: 0 0 16px; }
+:where(.doc) h2 { font-size: 28px; line-height: 36px; margin: 56px 0 16px; padding-top: 24px; border-top: 2px solid var(--text-primary); }
+:where(.doc) h3 { font-size: 22px; line-height: 28px; margin: 0 0 8px; }
+:where(.doc) h4 { font-size: 18px; line-height: 24px; margin: 16px 0 4px; }
+:where(.doc) :where(p, li, td, th) { font-size: 18px; line-height: 28px; }
+:where(.doc) ul { margin: 8px 0; padding-left: 24px; }
+:where(.doc) li { margin: 4px 0; }
+.lead { font-size: 20px !important; line-height: 30px !important; max-width: 820px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none; }
+.meta li { margin: 0; font-size: 15px !important; line-height: 20px !important; background: var(--surface); border: 1px solid var(--divider); border-radius: var(--radius-sm); padding: 6px 12px; }
+.meta strong { font-weight: 700; }
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 24px; }
+.card { background: var(--surface); border: 1px solid var(--divider); border-radius: var(--radius-md); padding: 20px; }
+.card h4 { margin-top: 0; }
+.card p { margin: 0; font-size: 16px !important; line-height: 24px !important; }
+.state { display: grid; grid-template-columns: 388px minmax(0, 1fr); gap: 40px; align-items: start; padding: 32px 0; border-bottom: 1px solid var(--divider); }
+.state:last-of-type { border-bottom: 0; }
+.state-tag { display: inline-block; font-size: 15px; line-height: 20px; font-weight: 700; color: var(--on-primary); background: var(--primary); border-radius: var(--radius-sm); padding: 2px 10px; margin-bottom: 8px; }
+.state-tag.modal { background: var(--on-warning); }
+.state dl { margin: 12px 0 0; }
+.state dt { font-size: 15px; line-height: 20px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .04em; margin-top: 16px; }
+.state dd { margin: 4px 0 0; font-size: 18px; line-height: 28px; }
+.state dd ul { margin: 0; }
+.device { width: 360px; padding: 14px; background: var(--text-primary); border-radius: 50px; box-shadow: var(--shadow-dialog); position: relative; }
+.device::before { content: ""; position: absolute; top: 5px; left: 50%; width: 56px; height: 4px; margin-left: -28px; border-radius: 2px; background: var(--border); }
+.screen :where(h1, h2, h3, p, ul) { margin: 0; padding-top: 0; border-top: 0; }
+.screen { width: 360px; height: 800px; border-radius: 36px; overflow: hidden; position: relative; background: var(--bg); font-family: var(--font-sans); color: var(--text-primary); }
+.app { width: 360px; height: 800px; box-sizing: border-box; display: flex; flex-direction: column; background: var(--bg); }
+.pad { display: flex; flex-direction: column; gap: 16px; padding: 16px; }
+.grow { flex-grow: 1; }
+.scrim { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 16px; background: var(--scrim); }
+.scrim > * { width: 100%; }
+.snack-pos { position: absolute; left: 16px; right: 16px; bottom: 16px; }
+.ff-alert.ff-dialog { background: var(--surface); border-color: var(--border); }
+.ff-dialog .ff-alert-head { color: var(--primary); }
+.ff-dialog .ff-alert-title { color: var(--text-primary); }
+.kp-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 8px; background: var(--divider); }
+.kp { font-family: var(--font-sans); font-size: 24px; line-height: 28px; font-weight: 700; color: var(--text-primary); background: var(--surface); border: 1px solid var(--divider); border-radius: var(--radius-sm); min-height: 52px; display: flex; align-items: center; justify-content: center; }
+.who { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--divider); border-radius: var(--radius-md); }
+.who b { font-size: 20px; line-height: 26px; }
+.who span { font-size: 18px; line-height: 24px; font-weight: 700; }
+.meta-line { margin: 0; font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+.link { display: inline-flex; align-items: center; min-height: 48px; padding: 0 4px; font-size: 18px; line-height: 24px; font-weight: 700; color: var(--primary); text-decoration: underline; text-underline-offset: 3px; }
+.block-error { display: flex; align-items: flex-start; gap: 8px; padding: 12px 16px; background: var(--error-container); border: 2px solid var(--error); border-radius: var(--radius-md); color: var(--error); font-size: 16px; line-height: 24px; }
+.block-info { display: flex; align-items: flex-start; gap: 8px; padding: 12px 16px; background: var(--info-container); border: 1px solid var(--info); border-radius: var(--radius-md); color: var(--text-primary); font-size: 16px; line-height: 24px; }
+.block-info .ff-icon { color: var(--info); }
+.divider-or { display: flex; align-items: center; gap: 12px; }
+.divider-or i { flex-grow: 1; height: 1px; background: var(--border); }
+.divider-or span { font-size: 16px; line-height: 24px; color: var(--text-secondary); }
+.empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 48px 24px; }
+.empty .ff-icon { font-size: 48px; color: var(--border); }
+.empty p { margin: 0; font-size: 18px; line-height: 26px; }
+.spec { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--divider); border-radius: var(--radius-md); overflow: hidden; }
+.spec th { text-align: left; font-size: 15px !important; line-height: 20px !important; text-transform: uppercase; letter-spacing: .04em; color: var(--text-secondary); background: var(--bg); padding: 12px 16px; border-bottom: 1px solid var(--divider); }
+.spec td { vertical-align: top; padding: 12px 16px; border-bottom: 1px solid var(--divider); font-size: 16px !important; line-height: 24px !important; }
+.spec tr:last-child td { border-bottom: 0; }
+.spec td:first-child { font-weight: 700; width: 26%; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0 !important; }
+.chips li { margin: 0; background: var(--primary-container); color: var(--text-primary); border-radius: var(--radius-sm); padding: 4px 12px; font-size: 16px !important; line-height: 24px !important; }
+.foot { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--divider); font-size: 15px; line-height: 20px; color: var(--text-secondary); }
+@media (max-width: 860px) { .state { grid-template-columns: 1fr; } .device { margin: 0 auto; } }
+@media print { .doc-nav { display: none; } .state { break-inside: avoid; } h2 { break-after: avoid; } }
+</style>
+</head>
+<body>
+<main class="doc"><nav class="doc-nav" aria-label="Navegação entre telas"><a href="00-indice.html"><span class="ff-icon" aria-hidden="true">grid_view</span>Índice das telas</a><span style="display:flex;gap:24px;flex-wrap:wrap"><a href="08-novo-fiado.html"><span class="ff-icon" aria-hidden="true">arrow_back</span>Novo Fiado</a><span></span></span></nav><p class="doc-kicker">Fiado Fácil · Especificação de tela · T3.1</p><h1>Registrar pagamento</h1><p class="lead">Registra um pagamento total ou parcial do cliente para abater a dívida do fiado. Segue o mesmo padrão do Novo Fiado, para o usuário não precisar aprender outra tela.</p><ul class="meta"><li><strong>Requisitos:</strong> RF05, RNF01, RNF02, RNF03, RNF04</li><li><strong>Usuários:</strong> atendentes e proprietário</li></ul><div class="summary"><div class="card"><h4>Entrada</h4><p>Botão “Pagou” na Ficha do Cliente.</p></div><div class="card"><h4>Saída principal</h4><p>“Salvar pagamento” → Ficha com o saldo atualizado e a confirmação.</p></div><div class="card"><h4>Desvio</h4><p>Valor maior que o saldo → modal Paga mais do que deve.</p></div><div class="card"><h4>Atalho</h4><p>“Pagou tudo” preenche o saldo exato.</p></div></div><h2>Estados da tela</h2><p>4 estados. Cada um mostra a tela como ela aparece no celular de 360 × 800 dp.</p><section class="state" id="p-a"><div class="device"><div class="screen"><div class="app"><header class="ff-topbar has-back"><div class="ff-topbar-left"><button type="button" class="ff-btn ff-btn-text"><span class="ff-icon" aria-hidden="true">arrow_back</span><span>Voltar</span></button><h1 class="ff-topbar-title">Pagamento</h1></div></header><div class="pad" style="padding-top:8px"><div class="who"><b>Maria Souza</b><span>Deve R$ 227,90</span></div><label class="ff-field"><span class="ff-label">Valor pago (R$)</span><span class="ff-input ff-money is-focus"><span class="ff-money-prefix">R$</span><span class="ff-money-value ff-input-placeholder">0,00</span></span></label><button type="button" class="ff-btn ff-btn-secondary"><span class="ff-icon" aria-hidden="true">done_all</span><span>Pagou tudo (R$ 227,90)</span></button><button type="button" class="ff-btn ff-btn-primary"><span class="ff-icon" aria-hidden="true">payments</span><span>Salvar pagamento</span></button></div><div class="grow"></div><div class="kp-grid" aria-label="Teclado numérico"><button class="kp" type="button">1</button><button class="kp" type="button">2</button><button class="kp" type="button">3</button><button class="kp" type="button">4</button><button class="kp" type="button">5</button><button class="kp" type="button">6</button><button class="kp" type="button">7</button><button class="kp" type="button">8</button><button class="kp" type="button">9</button><button class="kp" type="button">00</button><button class="kp" type="button">0</button><button class="kp" type="button" aria-label="Apagar"><span class="ff-icon" aria-hidden="true">backspace</span></button></div></div></div></div><div><span class="state-tag">Estado A</span><h3>Inicial</h3><dl><dt>Quando aparece</dt><dd>Ao tocar em “Pagou” na ficha.</dd><dt>O que a tela mostra</dt><dd><ul><li>Cartão com o cliente e quanto ele deve.</li><li>Campo “Valor pago (R$)” com foco e teclado numérico.</li><li>Atalho “Pagou tudo (R$ 227,90)”.</li></ul></dd><dt>Ações e resultados</dt><dd><ul><li>Digitar o valor → estado B.</li><li>“Pagou tudo” preenche R$ 227,90.</li><li>“Salvar pagamento” com valor vazio → estado C.</li></ul></dd></dl></div></section><section class="state" id="p-b"><div class="device"><div class="screen"><div class="app"><header class="ff-topbar has-back"><div class="ff-topbar-left"><button type="button" class="ff-btn ff-btn-text"><span class="ff-icon" aria-hidden="true">arrow_back</span><span>Voltar</span></button><h1 class="ff-topbar-title">Pagamento</h1></div></header><div class="pad" style="padding-top:8px"><div class="who"><b>Maria Souza</b><span>Deve R$ 227,90</span></div><label class="ff-field"><span class="ff-label">Valor pago (R$)</span><span class="ff-input ff-money is-focus"><span class="ff-money-prefix">R$</span><span class="ff-money-value">100,00</span></span></label><button type="button" class="ff-btn ff-btn-secondary"><span class="ff-icon" aria-hidden="true">done_all</span><span>Pagou tudo (R$ 227,90)</span></button><button type="button" class="ff-btn ff-btn-primary"><span class="ff-icon" aria-hidden="true">payments</span><span>Salvar pagamento</span></button></div><div class="grow"></div><div class="kp-grid" aria-label="Teclado numérico"><button class="kp" type="button">1</button><button class="kp" type="button">2</button><button class="kp" type="button">3</button><button class="kp" type="button">4</button><button class="kp" type="button">5</button><button class="kp" type="button">6</button><button class="kp" type="button">7</button><button class="kp" type="button">8</button><button class="kp" type="button">9</button><button class="kp" type="button">00</button><button class="kp" type="button">0</button><button class="kp" type="button" aria-label="Apagar"><span class="ff-icon" aria-hidden="true">backspace</span></button></div></div></div></div><div><span class="state-tag">Estado B</span><h3>Pagamento parcial preenchido</h3><dl><dt>Quando aparece</dt><dd>Depois de digitar o valor.</dd><dt>O que a tela mostra</dt><dd><ul><li>Valor em 28 px.</li></ul></dd><dt>Ações e resultados</dt><dd><ul><li>“Salvar pagamento” → ficha com “Deve R$ 127,90” e a confirmação “Pagamento de R$ 100,00 registrado para Maria Souza.”</li></ul></dd></dl></div></section><section class="state" id="p-c"><div class="device"><div class="screen"><div class="app"><header class="ff-topbar has-back"><div class="ff-topbar-left"><button type="button" class="ff-btn ff-btn-text"><span class="ff-icon" aria-hidden="true">arrow_back</span><span>Voltar</span></button><h1 class="ff-topbar-title">Pagamento</h1></div></header><div class="pad" style="padding-top:8px"><div class="who"><b>Maria Souza</b><span>Deve R$ 227,90</span></div><label class="ff-field"><span class="ff-label">Valor pago (R$)</span><span class="ff-input ff-money is-error"><span class="ff-money-prefix">R$</span><span class="ff-money-value ff-input-placeholder">0,00</span></span><p class="ff-error" role="alert"><span class="ff-icon" aria-hidden="true">error</span><span>Digite um valor maior que zero.</span></p></label><button type="button" class="ff-btn ff-btn-secondary"><span class="ff-icon" aria-hidden="true">done_all</span><span>Pagou tudo (R$ 227,90)</span></button><button type="button" class="ff-btn ff-btn-primary"><span class="ff-icon" aria-hidden="true">payments</span><span>Salvar pagamento</span></button></div><div class="grow"></div><div class="kp-grid" aria-label="Teclado numérico"><button class="kp" type="button">1</button><button class="kp" type="button">2</button><button class="kp" type="button">3</button><button class="kp" type="button">4</button><button class="kp" type="button">5</button><button class="kp" type="button">6</button><button class="kp" type="button">7</button><button class="kp" type="button">8</button><button class="kp" type="button">9</button><button class="kp" type="button">00</button><button class="kp" type="button">0</button><button class="kp" type="button" aria-label="Apagar"><span class="ff-icon" aria-hidden="true">backspace</span></button></div></div></div></div><div><span class="state-tag">Estado C</span><h3>Erro: valor vazio</h3><dl><dt>Quando aparece</dt><dd>“Salvar pagamento” com valor vazio ou zero.</dd><dt>O que a tela mostra</dt><dd><ul><li>Borda de erro e a mensagem “Digite um valor maior que zero.”</li></ul></dd><dt>Ações e resultados</dt><dd><ul><li>O foco volta ao campo; a mensagem some ao digitar.</li></ul></dd></dl></div></section><section class="state" id="p-d"><div class="device"><div class="screen"><div class="app"><header class="ff-topbar has-back"><div class="ff-topbar-left"><button type="button" class="ff-btn ff-btn-text"><span class="ff-icon" aria-hidden="true">arrow_back</span><span>Voltar</span></button><h1 class="ff-topbar-title">Pagamento</h1></div></header><div class="ff-banner" role="status"><span class="ff-icon" aria-hidden="true">cloud_off</span><span>Sem internet. Pode continuar usando: os dados serão enviados depois.</span></div><div class="pad" style="padding-top:8px"><div class="who"><b>Maria Souza</b><span>Deve R$ 227,90</span></div><label class="ff-field"><span class="ff-label">Valor pago (R$)</span><span class="ff-input ff-money is-focus"><span class="ff-money-prefix">R$</span><span class="ff-money-value">100,00</span></span></label><button type="button" class="ff-btn ff-btn-secondary"><span class="ff-icon" aria-hidden="true">done_all</span><span>Pagou tudo (R$ 227,90)</span></button><button type="button" class="ff-btn ff-btn-primary"><span class="ff-icon" aria-hidden="true">payments</span><span>Salvar pagamento</span></button></div><div class="grow"></div><div class="kp-grid" aria-label="Teclado numérico"><button class="kp" type="button">1</button><button class="kp" type="button">2</button><button class="kp" type="button">3</button><button class="kp" type="button">4</button><button class="kp" type="button">5</button><button class="kp" type="button">6</button><button class="kp" type="button">7</button><button class="kp" type="button">8</button><button class="kp" type="button">9</button><button class="kp" type="button">00</button><button class="kp" type="button">0</button><button class="kp" type="button" aria-label="Apagar"><span class="ff-icon" aria-hidden="true">backspace</span></button></div></div></div></div><div><span class="state-tag">Estado D</span><h3>Sem internet</h3><dl><dt>Quando aparece</dt><dd>O celular está sem conexão.</dd><dt>O que a tela mostra</dt><dd><ul><li>Faixa “Sem internet” no topo; o restante é igual.</li></ul></dd><dt>Ações e resultados</dt><dd><ul><li>“Salvar pagamento” grava no celular e mostra “Pagamento registrado. Será enviado quando houver internet.”</li></ul></dd></dl></div></section><h2>Modais</h2><section class="state" id="p-m1"><div class="device"><div class="screen"><div class="app" style="position:relative"><header class="ff-topbar has-back"><div class="ff-topbar-left"><button type="button" class="ff-btn ff-btn-text"><span class="ff-icon" aria-hidden="true">arrow_back</span><span>Voltar</span></button><h1 class="ff-topbar-title">Pagamento</h1></div></header><div class="pad" style="padding-top:8px"><div class="who"><b>Maria Souza</b><span>Deve R$ 227,90</span></div><label class="ff-field"><span class="ff-label">Valor pago (R$)</span><span class="ff-input ff-money is-focus"><span class="ff-money-prefix">R$</span><span class="ff-money-value">250,00</span></span></label><button type="button" class="ff-btn ff-btn-secondary"><span class="ff-icon" aria-hidden="true">done_all</span><span>Pagou tudo (R$ 227,90)</span></button><button type="button" class="ff-btn ff-btn-primary"><span class="ff-icon" aria-hidden="true">payments</span><span>Salvar pagamento</span></button></div><div class="grow"></div><div class="kp-grid" aria-label="Teclado numérico"><button class="kp" type="button">1</button><button class="kp" type="button">2</button><button class="kp" type="button">3</button><button class="kp" type="button">4</button><button class="kp" type="button">5</button><button class="kp" type="button">6</button><button class="kp" type="button">7</button><button class="kp" type="button">8</button><button class="kp" type="button">9</button><button class="kp" type="button">00</button><button class="kp" type="button">0</button><button class="kp" type="button" aria-label="Apagar"><span class="ff-icon" aria-hidden="true">backspace</span></button></div><div class="scrim"><div class="ff-alert" role="alertdialog" aria-labelledby="dlg-t"><div class="ff-alert-head"><span class="ff-icon" aria-hidden="true">warning</span><h2 class="ff-alert-title" id="dlg-t">Paga mais do que deve</h2></div><p class="ff-alert-body">Maria Souza deve R$ 227,90. Com este pagamento de R$ 250,00, ela fica com crédito de R$ 22,10. Registrar mesmo assim?</p><div class="ff-alert-actions"><button type="button" class="ff-btn ff-btn-primary"><span>Registrar mesmo assim</span></button><button type="button" class="ff-btn ff-btn-secondary"><span>Voltar</span></button></div></div></div></div></div></div><div><span class="state-tag modal">Modal</span><h3>Paga mais do que deve</h3><dl><dt>Quando aparece</dt><dd>“Salvar pagamento” com valor maior que o saldo devedor.</dd><dt>O que a tela mostra</dt><dd><ul><li>Diálogo de aviso (mesma anatomia do LimitAlert) com o saldo, o valor pago e o crédito que vai sobrar.</li></ul></dd><dt>Ações e resultados</dt><dd><ul><li>“Registrar mesmo assim” grava e abre a ficha no estado Crédito.</li><li>“Voltar” fecha o diálogo para corrigir o valor.</li></ul></dd></dl></div></section><h2>Comportamentos</h2><table class="spec"><thead><tr><th>Elemento</th><th>Interação</th><th>Resultado</th></tr></thead><tbody><tr><td>Campo “Valor pago (R$)”</td><td>Digitar</td><td>Preenche da direita para a esquerda; máximo R$ 99.999,99.</td></tr><tr><td>Botão “Pagou tudo”</td><td>Toque</td><td>Preenche o valor com o saldo devedor exato. Oculto quando o cliente não deve.</td></tr><tr><td>Botão “Salvar pagamento”</td><td>Toque</td><td>Valida; verifica se passa do saldo; grava localmente em até 1 s; volta à ficha.</td></tr><tr><td>Botão “Voltar”</td><td>Toque</td><td>Sem valor: volta à ficha. Com valor: modal Sair sem salvar (igual ao do Novo Fiado).</td></tr><tr><td>Toque duplo em “Salvar pagamento”</td><td>Toque repetido</td><td>Ignorado depois do primeiro.</td></tr></tbody></table><h2>Regras e validações</h2><ul><li>Valor obrigatório, inteiro em centavos e maior que zero (RF05).</li><li>Pagamento maior que o saldo é permitido após confirmação; a diferença vira crédito (RF05).</li><li>Data, hora e atendente preenchidos automaticamente (RNF01).</li><li>Pagamentos não podem ser editados, só cancelados na ficha (RF08).</li></ul><h2>Textos da tela</h2><table class="spec"><thead><tr><th>Situação</th><th>Texto exibido</th></tr></thead><tbody><tr><td>Rótulo</td><td>Valor pago (R$)</td></tr><tr><td>Atalho</td><td>Pagou tudo (R$ 227,90)</td></tr><tr><td>Valor vazio</td><td>Digite um valor maior que zero.</td></tr><tr><td>Aviso</td><td>Paga mais do que deve — Maria Souza deve R$ 227,90. Com este pagamento de R$ 250,00, ela fica com crédito de R$ 22,10. Registrar mesmo assim?</td></tr><tr><td>Confirmação</td><td>Pagamento de R$ 100,00 registrado para Maria Souza.</td></tr><tr><td>Confirmação offline</td><td>Pagamento registrado. Será enviado quando houver internet.</td></tr></tbody></table><h2>Acessibilidade</h2><ul><li>Mesma estrutura do Novo Fiado: o usuário reconhece a tela.</li><li>Atalho “Pagou tudo” evita digitar o valor exato.</li><li>Aviso com ícone, título e texto; anunciado ao abrir.</li><li>Botões de 56 px e teclas de 52 px; rótulos permanentes.</li></ul><h2>Design system</h2><p>Componentes e tokens do Fiado Fácil usados nesta tela:</p><ul class="chips"><li>TopBar (com Voltar)</li><li>MoneyField</li><li>Button secondary</li><li>Button primary</li><li>FieldError</li><li>OfflineBanner</li><li>Diálogo de aviso (anatomia do LimitAlert)</li></ul><p class="foot">Fiado Fácil · Protótipo v1.0 · 17/11/2026 · Dados fictícios. Mercadinho da Família é um parceiro simulado para fins acadêmicos.</p></main></body></html>

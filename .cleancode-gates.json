@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0",
+  "stacks": {
+    "dart-flutter": {
+      "roots": [
+        "lib"
+      ],
+      "exclude": [
+        "**/*.g.dart",
+        "**/*.freezed.dart",
+        "**/*.gql.dart",
+        "**/*.config.dart",
+        "**/__generated__/**"
+      ],
+      "gates": {
+        "G1": {
+          "tool": "flutter",
+          "thresholds": {
+            "statements": 85,
+            "branches": 80
+          },
+          "exempt": [
+            "lib/ui/theme/app_colors.dart",
+            "lib/ui/theme/app_dimens.dart",
+            "lib/ui/theme/app_text_styles.dart"
+          ]
+        },
+        "G2": {
+          "tool": "dart_code_linter",
+          "thresholds": {
+            "cyclomatic-complexity": 8,
+            "maximum-nesting-level": 2,
+            "number-of-parameters": 4,
+            "source-lines-of-code": 30
+          }
+        },
+        "G4": {
+          "tool": "dart_code_linter"
+        },
+        "G5": {
+          "tool": "builtin"
+        },
+        "G6": {
+          "tool": "mutation_test",
+          "thresholds": {
+            "mutationScore": 70
+          },
+          "budget": {
+            "perMutantSeconds": 120,
+            "totalSeconds": 16200,
+            "maxMutants": 400
+          },
+          "on_bound": "disclose"
+        },
+        "G7": {
+          "tool": "builtin"
+        }
+      },
+      "baseline": ".dart_code_linter_baseline.yaml"
+    }
+  }
+}
