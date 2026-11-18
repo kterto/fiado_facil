@@ -38,26 +38,10 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             children: [
               if (back != null) ...[
-                AppButton.text(
-                  label: _backLabel,
-                  icon: Icons.arrow_back_rounded,
-                  onPressed: back,
-                ),
+                _buildBackButton(back),
                 const SizedBox(width: AppSpacing.space1),
               ],
-              Expanded(
-                child: Semantics(
-                  header: true,
-                  child: Text(
-                    title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.title.copyWith(
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ),
-              ),
+              Expanded(child: _buildTitle()),
               for (final action in actions) ...[
                 const SizedBox(width: AppSpacing.space1),
                 action,
@@ -65,6 +49,26 @@ class TopBar extends StatelessWidget implements PreferredSizeWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildBackButton(VoidCallback back) {
+    return AppButton.text(
+      label: _backLabel,
+      icon: Icons.arrow_back_rounded,
+      onPressed: back,
+    );
+  }
+
+  Widget _buildTitle() {
+    return Semantics(
+      header: true,
+      child: Text(
+        title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: AppTextStyles.title.copyWith(color: AppColors.textPrimary),
       ),
     );
   }

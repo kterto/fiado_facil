@@ -110,43 +110,21 @@ class AppButton extends StatelessWidget {
     final idle = _idleColors(variant);
     final isFullWidth = variant != _AppButtonVariant.text;
     final foreground = WidgetStateProperty.resolveWith(
-      (states) => states.contains(WidgetState.disabled)
-          ? AppColors.textSecondary
-          : idle.foreground,
+      (states) => _foregroundIn(states, idle.foreground),
     );
     return ButtonStyle(
       textStyle: const WidgetStatePropertyAll(AppTextStyles.label),
-      backgroundColor: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.disabled)) {
-          return AppColors.disabledBg;
-        }
-        if (variant == _AppButtonVariant.primary &&
-            states.contains(WidgetState.pressed)) {
-          return AppColors.primaryPressed;
-        }
-        return idle.background;
-      }),
+      backgroundColor: WidgetStateProperty.resolveWith(
+        (states) => _backgroundIn(states, variant, idle.background),
+      ),
       foregroundColor: foreground,
       iconColor: foreground,
-      side: WidgetStateProperty.resolveWith((states) {
-        if (states.contains(WidgetState.disabled)) {
-          return const BorderSide(color: AppColors.disabledBg);
-        }
-        if (states.contains(WidgetState.focused)) {
-          return const BorderSide(color: AppColors.focus, width: 2);
-        }
-        return idle.side;
-      }),
-      padding: WidgetStatePropertyAll(
-        EdgeInsets.symmetric(
-          horizontal: isFullWidth ? AppSpacing.space4 : AppSpacing.space2,
-          vertical: AppSpacing.space2,
-        ),
+      side: WidgetStateProperty.resolveWith(
+        (states) => _sideIn(states, idle.side),
       ),
+      padding: WidgetStatePropertyAll(_paddingFor(isFullWidth: isFullWidth)),
       minimumSize: WidgetStatePropertyAll(
-        isFullWidth
-            ? const Size.fromHeight(AppSizes.buttonHeight)
-            : const Size(AppSizes.touchMin, AppSizes.touchMin),
+        _minimumSizeFor(isFullWidth: isFullWidth),
       ),
       tapTargetSize: MaterialTapTargetSize.padded,
       visualDensity: VisualDensity.standard,
@@ -157,6 +135,50 @@ class AppButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  static Color _foregroundIn(Set<WidgetState> states, Color idle) {
+    return states.contains(WidgetState.disabled)
+        ? AppColors.textSecondary
+        : idle;
+  }
+
+  static Color _backgroundIn(
+    Set<WidgetState> states,
+    _AppButtonVariant variant,
+    Color idle,
+  ) {
+    if (states.contains(WidgetState.disabled)) {
+      return AppColors.disabledBg;
+    }
+    if (variant == _AppButtonVariant.primary &&
+        states.contains(WidgetState.pressed)) {
+      return AppColors.primaryPressed;
+    }
+    return idle;
+  }
+
+  static BorderSide _sideIn(Set<WidgetState> states, BorderSide idle) {
+    if (states.contains(WidgetState.disabled)) {
+      return const BorderSide(color: AppColors.disabledBg);
+    }
+    if (states.contains(WidgetState.focused)) {
+      return const BorderSide(color: AppColors.focus, width: 2);
+    }
+    return idle;
+  }
+
+  static EdgeInsets _paddingFor({required bool isFullWidth}) {
+    return EdgeInsets.symmetric(
+      horizontal: isFullWidth ? AppSpacing.space4 : AppSpacing.space2,
+      vertical: AppSpacing.space2,
+    );
+  }
+
+  static Size _minimumSizeFor({required bool isFullWidth}) {
+    return isFullWidth
+        ? const Size.fromHeight(AppSizes.buttonHeight)
+        : const Size(AppSizes.touchMin, AppSizes.touchMin);
   }
 
   static ({Color background, Color foreground, BorderSide side}) _idleColors(

@@ -37,12 +37,14 @@ Future<_Harness> _open(
   );
   showConfirmDialog(
     hostContext,
-    title: _title,
-    message: _message,
-    confirmLabel: _confirm,
-    dismissLabel: _dismiss,
-    icon: icon,
-    tone: tone,
+    ConfirmDialogContent(
+      title: _title,
+      message: _message,
+      confirmLabel: _confirm,
+      dismissLabel: _dismiss,
+      icon: icon,
+      tone: tone,
+    ),
   ).then((value) {
     harness
       ..result = value

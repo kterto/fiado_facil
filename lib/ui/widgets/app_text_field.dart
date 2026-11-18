@@ -39,7 +39,6 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon = leadingIcon;
     final inputStyle = AppTextStyles.body.copyWith(
       color: AppColors.textPrimary,
     );
@@ -59,14 +58,20 @@ class AppTextField extends StatelessWidget {
         maxLength: maxLength,
         textAlignVertical: TextAlignVertical.center,
         style: inputStyle,
-        decoration: appFieldDecoration(
-          hasError: errorText != null,
-          minHeight: AppSizes.fieldHeight,
-          inputStyle: inputStyle,
-          hintText: hintText,
-          prefix: icon == null ? null : Icon(icon, color: AppColors.border),
-        ),
+        decoration: _decoration(inputStyle),
       ),
+    );
+  }
+
+  InputDecoration _decoration(TextStyle inputStyle) {
+    final icon = leadingIcon;
+    return appFieldDecoration(
+      hasError: errorText != null,
+      inputStyle: inputStyle,
+      hintText: hintText,
+      prefix: icon == null ? null : Icon(icon, color: AppColors.border),
+    ).copyWith(
+      constraints: const BoxConstraints(minHeight: AppSizes.fieldHeight),
     );
   }
 }
@@ -87,7 +92,6 @@ class AppFieldLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final suffix = labelSuffix;
     final error = errorText;
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -98,24 +102,7 @@ class AppFieldLayout extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text.rich(
-                TextSpan(
-                  text: label,
-                  children: [
-                    if (suffix != null)
-                      TextSpan(
-                        text: ' $suffix',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                  ],
-                ),
-                style: AppTextStyles.label.copyWith(
-                  color: AppColors.textPrimary,
-                ),
-              ),
+              _buildLabel(),
               const SizedBox(height: AppSpacing.space2),
               input,
             ],
@@ -128,34 +115,39 @@ class AppFieldLayout extends StatelessWidget {
       ],
     );
   }
+
+  Widget _buildLabel() {
+    final suffix = labelSuffix;
+    return Text.rich(
+      TextSpan(
+        text: label,
+        children: [
+          if (suffix != null)
+            TextSpan(
+              text: ' $suffix',
+              style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                color: AppColors.textSecondary,
+              ),
+            ),
+        ],
+      ),
+      style: AppTextStyles.label.copyWith(color: AppColors.textPrimary),
+    );
+  }
 }
 
 InputDecoration appFieldDecoration({
   required bool hasError,
-  required double minHeight,
   required TextStyle inputStyle,
   String? hintText,
   Widget? prefix,
 }) {
-  const errorSide = BorderSide(color: AppColors.error, width: 2);
-  final idleSide = hasError
-      ? errorSide
-      : const BorderSide(color: AppColors.border);
-  final focusedSide = hasError
-      ? errorSide
-      : const BorderSide(color: AppColors.primary, width: 2);
+  final sides = _borderSides(hasError: hasError);
   return InputDecoration(
     hintText: hintText,
     hintStyle: inputStyle.copyWith(color: AppColors.textSecondary),
-    prefixIcon: prefix == null
-        ? null
-        : Padding(
-            padding: const EdgeInsetsDirectional.only(
-              start: AppSpacing.space3,
-              end: AppSpacing.space1,
-            ),
-            child: prefix,
-          ),
+    prefixIcon: prefix == null ? null : _paddedPrefix(prefix),
     prefixIconConstraints: const BoxConstraints(),
     filled: true,
     fillColor: AppColors.surface,
@@ -164,11 +156,31 @@ InputDecoration appFieldDecoration({
       horizontal: AppSpacing.space3,
       vertical: AppSpacing.space3,
     ),
-    constraints: BoxConstraints(minHeight: minHeight),
     counterStyle: AppTextStyles.meta.copyWith(color: AppColors.textSecondary),
-    enabledBorder: _outline(idleSide),
-    focusedBorder: _outline(focusedSide),
-    disabledBorder: _outline(idleSide),
+    enabledBorder: _outline(sides.idle),
+    focusedBorder: _outline(sides.focused),
+    disabledBorder: _outline(sides.idle),
+  );
+}
+
+({BorderSide idle, BorderSide focused}) _borderSides({required bool hasError}) {
+  const errorSide = BorderSide(color: AppColors.error, width: 2);
+  if (hasError) {
+    return (idle: errorSide, focused: errorSide);
+  }
+  return (
+    idle: const BorderSide(color: AppColors.border),
+    focused: const BorderSide(color: AppColors.primary, width: 2),
+  );
+}
+
+Widget _paddedPrefix(Widget prefix) {
+  return Padding(
+    padding: const EdgeInsetsDirectional.only(
+      start: AppSpacing.space3,
+      end: AppSpacing.space1,
+    ),
+    child: prefix,
   );
 }
 

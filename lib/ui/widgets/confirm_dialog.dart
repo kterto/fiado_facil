@@ -8,42 +8,15 @@ import 'app_button.dart';
 
 enum ConfirmDialogTone { neutral, warning }
 
-Future<bool> showConfirmDialog(
-  BuildContext context, {
-  required String title,
-  required String message,
-  required String confirmLabel,
-  required String dismissLabel,
-  IconData? icon,
-  ConfirmDialogTone tone = ConfirmDialogTone.neutral,
-}) async {
-  final result = await showDialog<bool>(
-    context: context,
-    barrierColor: AppColors.scrim,
-    builder: (dialogContext) => _ConfirmDialog(
-      title: title,
-      message: message,
-      confirmLabel: confirmLabel,
-      dismissLabel: dismissLabel,
-      icon: icon,
-      tone: tone,
-    ),
-  );
-  return result ?? false;
-}
-
-class _ConfirmDialog extends StatelessWidget {
-  const _ConfirmDialog({
+class ConfirmDialogContent {
+  const ConfirmDialogContent({
     required this.title,
     required this.message,
     required this.confirmLabel,
     required this.dismissLabel,
-    required this.icon,
-    required this.tone,
+    this.icon,
+    this.tone = ConfirmDialogTone.neutral,
   });
-
-  static const double _iconSize = 32;
-  static const double _borderWidth = 2;
 
   final String title;
   final String message;
@@ -51,24 +24,61 @@ class _ConfirmDialog extends StatelessWidget {
   final String dismissLabel;
   final IconData? icon;
   final ConfirmDialogTone tone;
+}
+
+Future<bool> showConfirmDialog(
+  BuildContext context,
+  ConfirmDialogContent content,
+) async {
+  final result = await showDialog<bool>(
+    context: context,
+    barrierColor: AppColors.scrim,
+    builder: (dialogContext) => _ConfirmDialog(content),
+  );
+  return result ?? false;
+}
+
+typedef _DialogPalette = ({
+  Color background,
+  Color accent,
+  Color icon,
+  Color title,
+});
+
+class _ConfirmDialog extends StatelessWidget {
+  const _ConfirmDialog(this.content);
+
+  static const double _iconSize = 32;
+  static const double _borderWidth = 2;
+  static const EdgeInsets _padding = EdgeInsets.fromLTRB(
+    AppSpacing.space5,
+    AppSpacing.space6,
+    AppSpacing.space5,
+    AppSpacing.space5,
+  );
+
+  final ConfirmDialogContent content;
+
+  static _DialogPalette _paletteFor(ConfirmDialogTone tone) {
+    return switch (tone) {
+      ConfirmDialogTone.neutral => (
+        background: AppColors.surface,
+        accent: AppColors.border,
+        icon: AppColors.primary,
+        title: AppColors.textPrimary,
+      ),
+      ConfirmDialogTone.warning => (
+        background: AppColors.warningContainer,
+        accent: AppColors.onWarning,
+        icon: AppColors.onWarning,
+        title: AppColors.onWarning,
+      ),
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
-    final (background, accent, iconColor, titleColor) = switch (tone) {
-      ConfirmDialogTone.neutral => (
-        AppColors.surface,
-        AppColors.border,
-        AppColors.primary,
-        AppColors.textPrimary,
-      ),
-      ConfirmDialogTone.warning => (
-        AppColors.warningContainer,
-        AppColors.onWarning,
-        AppColors.onWarning,
-        AppColors.onWarning,
-      ),
-    };
-    final headIcon = icon;
+    final palette = _paletteFor(content.tone);
     return Dialog(
       semanticsRole: SemanticsRole.alertDialog,
       backgroundColor: Colors.transparent,
@@ -79,61 +89,63 @@ class _ConfirmDialog extends StatelessWidget {
         scopesRoute: true,
         namesRoute: true,
         explicitChildNodes: true,
-        label: title,
+        label: content.title,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: background,
-            border: Border.all(color: accent, width: _borderWidth),
+            color: palette.background,
+            border: Border.all(color: palette.accent, width: _borderWidth),
             borderRadius: const BorderRadius.all(Radius.circular(AppRadii.lg)),
             boxShadow: const <BoxShadow>[AppShadows.dialog],
           ),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.space5,
-              AppSpacing.space6,
-              AppSpacing.space5,
-              AppSpacing.space5,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  children: [
-                    if (headIcon != null) ...[
-                      Icon(headIcon, size: _iconSize, color: iconColor),
-                      const SizedBox(width: AppSpacing.space2),
-                    ],
-                    Expanded(
-                      child: Text(
-                        title,
-                        style: AppTextStyles.title.copyWith(color: titleColor),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.space3),
-                Text(
-                  message,
-                  style: AppTextStyles.body.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.space5),
-                AppButton.primary(
-                  label: confirmLabel,
-                  onPressed: () => Navigator.of(context).pop(true),
-                ),
-                const SizedBox(height: AppSpacing.space2),
-                AppButton.secondary(
-                  label: dismissLabel,
-                  onPressed: () => Navigator.of(context).pop(false),
-                ),
-              ],
-            ),
+            padding: _padding,
+            child: _buildBody(context, palette),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildBody(BuildContext context, _DialogPalette palette) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _buildHeader(palette),
+        const SizedBox(height: AppSpacing.space3),
+        Text(
+          content.message,
+          style: AppTextStyles.body.copyWith(color: AppColors.textPrimary),
+        ),
+        const SizedBox(height: AppSpacing.space5),
+        AppButton.primary(
+          label: content.confirmLabel,
+          onPressed: () => Navigator.of(context).pop(true),
+        ),
+        const SizedBox(height: AppSpacing.space2),
+        AppButton.secondary(
+          label: content.dismissLabel,
+          onPressed: () => Navigator.of(context).pop(false),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeader(_DialogPalette palette) {
+    final headIcon = content.icon;
+    return Row(
+      children: [
+        if (headIcon != null) ...[
+          Icon(headIcon, size: _iconSize, color: palette.icon),
+          const SizedBox(width: AppSpacing.space2),
+        ],
+        Expanded(
+          child: Text(
+            content.title,
+            style: AppTextStyles.title.copyWith(color: palette.title),
+          ),
+        ),
+      ],
     );
   }
 }

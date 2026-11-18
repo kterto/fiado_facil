@@ -61,17 +61,22 @@ class _MoneyFieldState extends State<MoneyField> {
         textAlign: TextAlign.right,
         textAlignVertical: TextAlignVertical.center,
         style: inputStyle,
-        decoration: appFieldDecoration(
-          hasError: widget.errorText != null,
-          minHeight: AppSizes.amountFieldHeight,
-          inputStyle: inputStyle,
-          hintText: _hint,
-          prefix: Text(
-            kCurrencySymbol,
-            style: AppTextStyles.title.copyWith(color: AppColors.textSecondary),
-          ),
-        ),
+        decoration: _decoration(inputStyle),
       ),
+    );
+  }
+
+  InputDecoration _decoration(TextStyle inputStyle) {
+    return appFieldDecoration(
+      hasError: widget.errorText != null,
+      inputStyle: inputStyle,
+      hintText: _hint,
+      prefix: Text(
+        kCurrencySymbol,
+        style: AppTextStyles.title.copyWith(color: AppColors.textSecondary),
+      ),
+    ).copyWith(
+      constraints: const BoxConstraints(minHeight: AppSizes.amountFieldHeight),
     );
   }
 }
